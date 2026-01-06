@@ -28,5 +28,28 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.right: parent.right
         }
+
+        Text {
+            id: title_ASCII
+            color: "#E78C02"
+            anchors.left: topBar.left
+            anchors.verticalCenter: topBar.verticalCenter
+            anchors.leftMargin: 10
+            height: topBar.height
+            text:
+                " █████╗ ██╗   ██╗████████╗ ██████╗        ██████╗██╗     ██╗ ██████╗██╗  ██╗\n" +
+                "██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗      ██╔════╝██║     ██║██╔════╝██║ ██╔╝\n" +
+                "███████║██║   ██║   ██║   ██║   ██║█████╗██║     ██║     ██║██║     █████╔╝ \n" +
+                "██╔══██║██║   ██║   ██║   ██║   ██║╚════╝██║     ██║     ██║██║     ██╔═██╗ \n" +
+                "██║  ██║╚██████╔╝   ██║   ╚██████╔╝      ╚██████╗███████╗██║╚██████╗██║  ██╗\n" +
+                "╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝        ╚═════╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝"
+
+            font.pointSize: 4
+            font.bold: true
+            font.family: "JetBrains Mono"
+            wrapMode: Text.NoWrap
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+        }
     }
 }
