@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
+import "components"
 import Data 1.0
 
 ApplicationWindow {
@@ -22,11 +23,17 @@ ApplicationWindow {
             id: topBar
             height: 75
             color: "#060606"
-            border.color: "#333333"
-            border.width: 2
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
+
+            Rectangle {
+                id: border
+                height: 2
+                color: "#333333"
+                width: parent.width
+                anchors.bottom: parent.bottom
+            }
         }
 
         Text {
