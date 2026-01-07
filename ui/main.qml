@@ -58,5 +58,10 @@ ApplicationWindow {
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
         }
+
+        Mouse {
+            id: mouse
+            anchors.centerIn: parent
+        }
     }
 }
