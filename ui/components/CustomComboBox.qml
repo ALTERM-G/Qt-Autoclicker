@@ -5,43 +5,34 @@ Rectangle {
     width: 180
     height: 40
     radius: 6
+    border.color: "#2B2B2B"
+    border.width: 3
     color: mouseArea.containsMouse ? "#B4B4B4" : "#181818"
     signal pressed
     property string buttonText
-
-    Keys.onReturnPressed: doPress()
-    Keys.onEnterPressed: doPress()
-
-    function doPress() {
-        pressed()
-    }
-
-    Text {
-        anchors.centerIn: parent
-        text: convertButton.buttonText
-        font.pixelSize: 18
-        font.family: "JetBrains Mono"
-        font.bold: true
-        color: mouseArea.containsMouse ? "#2A2A2A" : "#B4B4B4"
-
-        Behavior on color {
-            ColorAnimation {
-                duration: 150
-            }
-        }
-    }
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: convertButton.doPress()
+        onClicked: convertButton.pressed()
     }
 
-    Behavior on color {
-        ColorAnimation {
-            duration: 150
+    Text {
+        id: text
+        anchors.centerIn: parent
+        text: buttonText
+        font.pixelSize: 18
+        font.bold: true
+        font.family: "JetBrains Mono"
+        color: mouseArea.containsMouse ? "#2A2A2A" : "#B4B4B4"
+        verticalAlignment: Text.AlignVCenter
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 150
+            }
         }
     }
 }

@@ -7,8 +7,8 @@ import Data 1.0
 ApplicationWindow {
     id: window
     visible: true
-    width: 400
-    height: 700
+    width: 450
+    height: 600
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
@@ -59,9 +59,20 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
         }
 
-        Mouse {
-            id: mouse
-            anchors.centerIn: parent
+        CustomButton {
+            id: button
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 30
+            buttonText: "Test"
+        }
+
+        CustomComboBox {
+            id: comboBox
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: button.bottom
+            anchors.bottomMargin: 60
+            buttonText: "Test"
         }
     }
 }
