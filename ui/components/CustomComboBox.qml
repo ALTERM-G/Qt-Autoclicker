@@ -1,4 +1,5 @@
 import QtQuick
+import Data 1.0
 
 Rectangle {
     id: convertButton
@@ -24,8 +25,7 @@ Rectangle {
         anchors.centerIn: parent
         text: buttonText
         font.pixelSize: 18
-        font.bold: true
-        font.family: "JetBrains Mono"
+        font.family: Data.fontBold
         color: mouseArea.containsMouse ? "#2A2A2A" : "#B4B4B4"
         verticalAlignment: Text.AlignVCenter
 

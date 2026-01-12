@@ -1,4 +1,5 @@
 import QtQuick
+import Data 1.0
 
 Rectangle {
     id: convertButton
@@ -13,15 +14,14 @@ Rectangle {
     Keys.onEnterPressed: doPress()
 
     function doPress() {
-        pressed()
+        pressed();
     }
 
     Text {
         anchors.centerIn: parent
         text: convertButton.buttonText
         font.pixelSize: 18
-        font.family: "JetBrains Mono"
-        font.bold: true
+        font.family: Data.fontBold
         color: mouseArea.containsMouse ? "#2A2A2A" : "#B4B4B4"
 
         Behavior on color {

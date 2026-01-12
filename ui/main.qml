@@ -52,8 +52,7 @@ ApplicationWindow {
                 "╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝        ╚═════╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝"
 
             font.pointSize: 4
-            font.bold: true
-            font.family: "JetBrains Mono"
+            font.family: Data.fontRegular
             wrapMode: Text.NoWrap
             horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
@@ -64,7 +63,7 @@ ApplicationWindow {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 30
-            buttonText: "Test"
+            buttonText: "Test0"
         }
 
         CustomComboBox {
@@ -72,7 +71,16 @@ ApplicationWindow {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: button.bottom
             anchors.bottomMargin: 60
-            buttonText: "Test"
+            buttonText: "Test0"
+        }
+
+        AppRect {
+            id: appRect
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: comboBox.bottom
+            anchors.bottomMargin: 60
+            width: 200
+            height: 100
         }
     }
 }
