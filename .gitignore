@@ -1,14 +1,10 @@
-# Python
+# Python cache
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.sqlite3
+*.py[cod]
 
-# QML / Qt
+# Qt / QML compiled files
 *.qmlc
-*.qmltypes
 
-# OS files
-.DS_Store
-Thumbs.db
+# Virtual environments
+.venv/
+venv/
