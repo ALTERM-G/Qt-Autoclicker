@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Controls
-import Data
 
 SpinBox {
     id: spinBox
@@ -18,10 +17,10 @@ SpinBox {
         text: spinBox.value
         font.pixelSize: 18
         font.family: Data.fontBold
-        color: "#ffffff"
+        color: Data.textColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        selectionColor: "#E78C02"
+        selectionColor: Data.themeColor
         selectByMouse: true
         selectedTextColor: "#000000"
         validator: IntValidator {
@@ -38,16 +37,16 @@ SpinBox {
             anchors.fill: parent
             hoverEnabled: true
             cursorShape: Qt.IBeamCursor
-            acceptedButtons: Qt.NoButton   // <-- ignores all clicks
-            enabled: true                  // <-- still changes cursor
+            acceptedButtons: Qt.NoButton
+            enabled: true
         }
     }
 
     background: Rectangle {
         anchors.fill: parent
         radius: 6
-        color: "#181818"
-        border.color: "#2B2B2B"
+        color: Data.backgroundColor
+        border.color: Data.borderColor
         border.width: 3
     }
 
@@ -55,7 +54,7 @@ SpinBox {
         x: spinBox.width - width
         height: spinBox.height / 2
         width: 30
-        color: "#181818"
+        color: Data.backgroundColor
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: 3
@@ -64,7 +63,7 @@ SpinBox {
         Text {
             text: "▴"
             anchors.centerIn: parent
-            color: upMouseArea.containsMouse ? "#E78C02" : "#B4B4B4"
+            color: upMouseArea.containsMouse ? Data.themeColor : Data.textColor
             font.pixelSize: 16
         }
 
@@ -80,7 +79,7 @@ SpinBox {
     down.indicator: Rectangle {
         width: 30
         height: spinBox.height / 2
-        color: "#181818"
+        color: Data.backgroundColor
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: 3
@@ -89,7 +88,7 @@ SpinBox {
         Text {
             text: "▾"
             anchors.centerIn: parent
-            color: downMouseArea.containsMouse ? "#E78C02" : "#B4B4B4"
+            color: downMouseArea.containsMouse ? Data.themeColor : Data.textColor
             font.pixelSize: 14
         }
 

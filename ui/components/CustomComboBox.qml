@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Controls
-import Data
 
 ComboBox {
     id: control
@@ -13,7 +12,7 @@ ComboBox {
         anchors.fill: parent
         font.pixelSize: 18
         font.family: Data.fontBold
-        color: mouseArea.containsMouse ? "#2A2A2A" : "#ffffff"
+        color: mouseArea.containsMouse ? Data.hoverTextColor : Data.textColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
@@ -26,7 +25,7 @@ ComboBox {
 
     indicator: Text {
         text: "▾"
-        color: "#2B2B2B"
+        color: Data.textColor
         font.pixelSize: 24
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -36,8 +35,8 @@ ComboBox {
     background: Rectangle {
         anchors.fill: parent
         radius: 6
-        color: mouseArea.containsMouse ? "#B4B4B4" : "#181818"
-        border.color: "#2B2B2B"
+        color: mouseArea.containsMouse ? Data.hoverBackgroundColor : Data.backgroundColor
+        border.color: Data.borderColor
         border.width: 3
 
         Behavior on color {
@@ -61,8 +60,8 @@ ComboBox {
 
         background: Rectangle {
             radius: 6
-            color: "#181818"
-            border.color: "#888888"
+            color: Data.backgroundColor
+            border.color: Data.borderColor
             border.width: 3
         }
 
@@ -82,14 +81,14 @@ ComboBox {
                         text: control.textRole ? model[control.textRole] : modelData
                         font.pixelSize: 18
                         font.family: Data.fontBold
-                        color: itemDelegate.hovered ? "#2A2A2A" : "#ffffff"
+                        color: itemDelegate.hovered ? Data.hoverTextColor : Data.textColor
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
 
                     background: Rectangle {
                         anchors.fill: parent
-                        color: itemDelegate.hovered ? "#E78C02" : "transparent"
+                        color: itemDelegate.hovered ? Data.themeColor : "transparent"
                         radius: 6
                     }
 

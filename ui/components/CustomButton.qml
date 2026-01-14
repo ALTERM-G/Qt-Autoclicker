@@ -1,12 +1,13 @@
 import QtQuick
-import Data
 
 Rectangle {
     id: convertButton
     width: 180
     height: 40
     radius: 6
-    color: mouseArea.containsMouse ? "#B4B4B4" : "#181818"
+    border.color: Data.borderColor
+    border.width: 3
+    color: mouseArea.containsMouse ? Data.hoverBackgroundColor : Data.backgroundColor
     signal pressed
     property string buttonText
 
@@ -22,7 +23,7 @@ Rectangle {
         text: convertButton.buttonText
         font.pixelSize: 18
         font.family: Data.fontBold
-        color: mouseArea.containsMouse ? "#2A2A2A" : "#B4B4B4"
+        color: mouseArea.containsMouse ? Data.hoverTextColor : Data.textColor
 
         Behavior on color {
             ColorAnimation {

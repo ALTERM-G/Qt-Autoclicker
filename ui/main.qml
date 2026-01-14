@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import "components"
-import Data
 
 ApplicationWindow {
     id: window
@@ -14,23 +13,24 @@ ApplicationWindow {
     minimumHeight: height
     maximumHeight: height
     title: "Autoclick and shortcut_manager"
+
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "#101010"
+        color: Data.appBackgroundColor
 
         Rectangle {
             id: topBar
             height: 75
-            color: "#060606"
+            color: Data.topBarColor
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
 
             Rectangle {
-                id: border
+                id: divider
                 height: 2
-                color: "#333333"
+                color: Data.dividerColor
                 width: parent.width
                 anchors.bottom: parent.bottom
             }
@@ -38,7 +38,7 @@ ApplicationWindow {
 
         Text {
             id: title_ASCII
-            color: "#E78C02"
+            color: Data.themeColor
             anchors.left: topBar.left
             anchors.verticalCenter: topBar.verticalCenter
             anchors.leftMargin: 10
@@ -58,40 +58,45 @@ ApplicationWindow {
             verticalAlignment: Text.AlignVCenter
         }
 
-        CustomButton {
-            id: button
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 30
-            buttonText: "Test0"
-        }
-
-        CustomComboBox {
-            id: comboBox
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: button.bottom
-            anchors.bottomMargin: 60
-            model: ["Test1", "Test2", "Test3"]
-        }
-
         AppRect {
             id: appRect
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: comboBox.bottom
-            anchors.bottomMargin: 60
-            width: 200
-            height: 100
-        }
+            anchors.centerIn: parent
+            anchors.topMargin: 100
+            width: 400
+            height: 300
 
-        CustomSpinBox {
-            id: spinBox
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: appRect.top
-            anchors.bottomMargin: 60
-            Component.onCompleted: {
-                spinBox.setFrom(0)
-                spinBox.setTo(1000)
-                spinBox.setValue(50)
+            Column {
+                anchors.fill: parent
+                anchors.topMargin: 40
+                spacing: 10
+
+                CustomText {
+                    id: customText
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Custom Text"
+                }
+
+                CustomButton {
+                    id: button
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    buttonText: "Test0"
+                }
+
+                CustomComboBox {
+                    id: comboBox
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    model: ["Test1", "Test2", "Test3"]
+                }
+
+                CustomSpinBox {
+                    id: spinBox
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    Component.onCompleted: {
+                        spinBox.setFrom(0)
+                        spinBox.setTo(1000)
+                        spinBox.setValue(50)
+                    }
+                }
             }
         }
     }
