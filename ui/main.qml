@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 import "components"
-import Data 1.0
+import Data
 
 ApplicationWindow {
     id: window
@@ -71,7 +71,7 @@ ApplicationWindow {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: button.bottom
             anchors.bottomMargin: 60
-            buttonText: "Test0"
+            model: ["Test1", "Test2", "Test3"]
         }
 
         AppRect {
@@ -81,6 +81,18 @@ ApplicationWindow {
             anchors.bottomMargin: 60
             width: 200
             height: 100
+        }
+
+        CustomSpinBox {
+            id: spinBox
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: appRect.top
+            anchors.bottomMargin: 60
+            Component.onCompleted: {
+                spinBox.setFrom(0)
+                spinBox.setTo(1000)
+                spinBox.setValue(50)
+            }
         }
     }
 }

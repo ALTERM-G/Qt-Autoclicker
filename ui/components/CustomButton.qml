@@ -1,5 +1,5 @@
 import QtQuick
-import Data 1.0
+import Data
 
 Rectangle {
     id: convertButton
