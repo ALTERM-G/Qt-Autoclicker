@@ -73,28 +73,45 @@ ApplicationWindow {
                 CustomText {
                     id: customText
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Custom Text"
-                }
-
-                CustomButton {
-                    id: button
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    buttonText: "Test0"
+                    text: "Mouse"
                 }
 
                 CustomComboBox {
-                    id: comboBox
+                    id: pressButton_comboBox
                     anchors.horizontalCenter: parent.horizontalCenter
-                    model: ["Test1", "Test2", "Test3"]
+                    model: ["left", "right", "middle"]
                 }
 
                 CustomSpinBox {
-                    id: spinBox
+                    id: cpsSpin
                     anchors.horizontalCenter: parent.horizontalCenter
                     Component.onCompleted: {
-                        spinBox.setFrom(0)
-                        spinBox.setTo(1000)
-                        spinBox.setValue(50)
+                        cpsSpin.setFrom(1)
+                        cpsSpin.setTo(1000)
+                        cpsSpin.setValue(50)
+                    }
+                }
+
+                Row {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 10
+
+                    CustomButton {
+                        id: run_button
+                        buttonText: "Run"
+                        run: true
+                        onPressed: {
+                            controller.start_clicking(pressButton_comboBox.currentText, cpsSpin.value)
+                        }
+                    }
+
+                    CustomButton {
+                        id: stop_button
+                        buttonText: "Stop"
+                        run: false
+                        onPressed: {
+                            controller.stop_clicking()
+                        }
                     }
                 }
             }

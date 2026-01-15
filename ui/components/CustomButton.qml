@@ -2,7 +2,7 @@ import QtQuick
 
 Rectangle {
     id: convertButton
-    width: 180
+    width: 120
     height: 40
     radius: 6
     border.color: Data.borderColor
@@ -10,6 +10,7 @@ Rectangle {
     color: mouseArea.containsMouse ? Data.hoverBackgroundColor : Data.backgroundColor
     signal pressed
     property string buttonText
+    property bool run: false
 
     Keys.onReturnPressed: doPress()
     Keys.onEnterPressed: doPress()

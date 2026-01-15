@@ -8,6 +8,7 @@ ComboBox {
     hoverEnabled: true
 
     contentItem: Text {
+        id: contentText
         text: control.displayText !== "" ? control.displayText : "Select"
         anchors.fill: parent
         font.pixelSize: 18
@@ -25,7 +26,7 @@ ComboBox {
 
     indicator: Text {
         text: "▾"
-        color: Data.textColor
+        color: contentText.color
         font.pixelSize: 24
         anchors.right: parent.right
         anchors.rightMargin: 10
