@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "pydbus>=0.6.0",
+    "pygobject>=3.54.5",
     "pynput>=1.8.1",
     "pyside6>=6.10.1",
     "wayland-automation>=0.2.6",

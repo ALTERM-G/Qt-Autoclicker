@@ -57,7 +57,7 @@ ComboBox {
 
     popup: Popup {
         width: control.width
-        implicitHeight: control.count * 47
+        implicitHeight: control.count * 50
 
         background: Rectangle {
             radius: 6

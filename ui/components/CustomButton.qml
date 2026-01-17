@@ -2,7 +2,7 @@ import QtQuick
 
 Rectangle {
     id: convertButton
-    width: 120
+    width: 150
     height: 40
     radius: 6
     border.color: Data.borderColor
@@ -11,10 +11,8 @@ Rectangle {
     signal pressed
     property string buttonText
     property bool run: false
-
     Keys.onReturnPressed: doPress()
     Keys.onEnterPressed: doPress()
-
     function doPress() {
         pressed();
     }

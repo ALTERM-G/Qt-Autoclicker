@@ -34,28 +34,35 @@ ApplicationWindow {
                 width: parent.width
                 anchors.bottom: parent.bottom
             }
-        }
 
-        Text {
-            id: title_ASCII
-            color: Data.themeColor
-            anchors.left: topBar.left
-            anchors.verticalCenter: topBar.verticalCenter
-            anchors.leftMargin: 10
-            height: topBar.height
-            text:
-                " █████╗ ██╗   ██╗████████╗ ██████╗        ██████╗██╗     ██╗ ██████╗██╗  ██╗\n" +
-                "██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗      ██╔════╝██║     ██║██╔════╝██║ ██╔╝\n" +
-                "███████║██║   ██║   ██║   ██║   ██║█████╗██║     ██║     ██║██║     █████╔╝ \n" +
-                "██╔══██║██║   ██║   ██║   ██║   ██║╚════╝██║     ██║     ██║██║     ██╔═██╗ \n" +
-                "██║  ██║╚██████╔╝   ██║   ╚██████╔╝      ╚██████╗███████╗██║╚██████╗██║  ██╗\n" +
-                "╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝        ╚═════╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝"
+            Text {
+                id: title_ASCII
+                color: Data.themeColor
+                anchors.left: topBar.left
+                anchors.verticalCenter: topBar.verticalCenter
+                anchors.leftMargin: 10
+                height: topBar.height
+                text:
+                    " █████╗ ██╗   ██╗████████╗ ██████╗        ██████╗██╗     ██╗ ██████╗██╗  ██╗\n" +
+                    "██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗      ██╔════╝██║     ██║██╔════╝██║ ██╔╝\n" +
+                    "███████║██║   ██║   ██║   ██║   ██║█████╗██║     ██║     ██║██║     █████╔╝ \n" +
+                    "██╔══██║██║   ██║   ██║   ██║   ██║╚════╝██║     ██║     ██║██║     ██╔═██╗ \n" +
+                    "██║  ██║╚██████╔╝   ██║   ╚██████╔╝      ╚██████╗███████╗██║╚██████╗██║  ██╗\n" +
+                    "╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝        ╚═════╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝"
 
-            font.pointSize: 4
-            font.family: Data.fontRegular
-            wrapMode: Text.NoWrap
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
+                font.pointSize: 4
+                font.family: Data.fontRegular
+                wrapMode: Text.NoWrap
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            SettingsButton {
+                id: settingsButton
+                anchors.right: parent.right
+                anchors.rightMargin: 20
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
         AppRect {
@@ -79,7 +86,13 @@ ApplicationWindow {
                 CustomComboBox {
                     id: pressButton_comboBox
                     anchors.horizontalCenter: parent.horizontalCenter
-                    model: ["left", "right", "middle"]
+                    model: ["left", "right"]
+                    onCurrentTextChanged: {
+                        controller.set_button(currentText)
+                    }
+                    Component.onCompleted: {
+                        controller.set_button(currentText)
+                    }
                 }
 
                 CustomSpinBox {
@@ -89,6 +102,10 @@ ApplicationWindow {
                         cpsSpin.setFrom(1)
                         cpsSpin.setTo(1000)
                         cpsSpin.setValue(50)
+                        controller.set_cps(cpsSpin.value)
+                    }
+                    onValueChanged: {
+                        controller.set_cps(value)
                     }
                 }
 
@@ -98,7 +115,7 @@ ApplicationWindow {
 
                     CustomButton {
                         id: run_button
-                        buttonText: "Run"
+                        buttonText: "Run (F6)"
                         run: true
                         onPressed: {
                             controller.start_clicking(pressButton_comboBox.currentText, cpsSpin.value)
@@ -107,7 +124,7 @@ ApplicationWindow {
 
                     CustomButton {
                         id: stop_button
-                        buttonText: "Stop"
+                        buttonText: "Stop (ESC)"
                         run: false
                         onPressed: {
                             controller.stop_clicking()

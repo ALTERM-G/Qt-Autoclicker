@@ -31,14 +31,14 @@ def main():
         _qml_objects.append(data_object)
         engine.rootContext().setContextProperty("Data", data_object)
 
-    # --- Load main.qml ---
-    main_qml = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui", "main.qml")
-    engine.load(QUrl.fromLocalFile(main_qml))
-
     # --- Controller ---
     controller = Controller()
     _qml_objects.append(controller)
     engine.rootContext().setContextProperty("controller", controller)
+
+    # --- Load main.qml ---
+    main_qml = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui", "main.qml")
+    engine.load(QUrl.fromLocalFile(main_qml))
 
     if not engine.rootObjects():
         sys.exit(-1)

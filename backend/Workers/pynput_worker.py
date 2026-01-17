@@ -15,7 +15,6 @@ class PynputClickWorker(QObject):
         buttons = {
             "left": Button.left,
             "right": Button.right,
-            "middle": Button.middle
         }
         self.button = buttons.get(button, Button.left)
 
