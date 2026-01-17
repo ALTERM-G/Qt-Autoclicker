@@ -8,8 +8,21 @@ from PySide6.QtQml import QQmlApplicationEngine, QQmlComponent
 from backend.controller import Controller
 
 _qml_objects = []
+_controller = None
+
+
+def cleanup():
+    global _controller
+    if _controller:
+        _controller.cleanup_shortcuts()
+
+    for obj in _qml_objects:
+        if hasattr(obj, "deleteLater"):
+            obj.deleteLater()
+
 
 def main():
+    global _controller
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
@@ -24,7 +37,9 @@ def main():
                 family = QFontDatabase.applicationFontFamilies(font_id)[0]
 
     # --- Load Data.qml ---
-    data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "Data.qml")
+    data_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "data", "Data.qml"
+    )
     if os.path.exists(data_path):
         data_component = QQmlComponent(engine, QUrl.fromLocalFile(data_path))
         data_object = data_component.create()
@@ -33,17 +48,24 @@ def main():
 
     # --- Controller ---
     controller = Controller()
+    _controller = controller
     _qml_objects.append(controller)
     engine.rootContext().setContextProperty("controller", controller)
 
     # --- Load main.qml ---
-    main_qml = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui", "main.qml")
+    main_qml = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "ui", "main.qml"
+    )
     engine.load(QUrl.fromLocalFile(main_qml))
 
     if not engine.rootObjects():
         sys.exit(-1)
 
-    sys.exit(app.exec())
+    app.aboutToQuit.connect(cleanup)
+    exit_code = app.exec()
+
+    sys.exit(exit_code)
+
 
 if __name__ == "__main__":
     main()

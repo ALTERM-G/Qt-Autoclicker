@@ -26,13 +26,11 @@ class Controller(QObject):
 
         if not is_wayland():
             self._shortcut_worker = ShortcutWorker(
-                start_key=keyboard.Key.f6,
-                stop_key=keyboard.Key.esc
+                start_key=keyboard.Key.f6, stop_key=keyboard.Key.esc
             )
         else:
             self._shortcut_worker = WaylandShortcutWorker(
-                start_key=ecodes.KEY_F6,
-                stop_key=ecodes.KEY_ESC
+                start_key=ecodes.KEY_F6, stop_key=ecodes.KEY_ESC
             )
 
         self._shortcut_thread = QThread()
@@ -103,9 +101,18 @@ class Controller(QObject):
         self._thread = None
         self.status_update.emit("Stopped")
 
+    def cleanup_shortcuts(self):
+        try:
+            if self._shortcut_worker:
+                self._shortcut_worker.stop_listening()
+            if self._shortcut_thread and self._shortcut_thread.isRunning():
+                self._shortcut_thread.quit()
+                self._shortcut_thread.wait()
+        except RuntimeError:
+            pass
+
     def __del__(self):
-        if self._shortcut_worker:
-            self._shortcut_worker.stop_listening()
-        if self._shortcut_thread:
-            self._shortcut_thread.quit()
-            self._shortcut_thread.wait()
+        try:
+            self.cleanup_shortcuts()
+        except:
+            pass

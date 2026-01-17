@@ -57,8 +57,7 @@ ApplicationWindow {
                 verticalAlignment: Text.AlignVCenter
             }
 
-            SettingsButton {
-                id: settingsButton
+            Settings {
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
