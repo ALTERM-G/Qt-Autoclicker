@@ -24,6 +24,8 @@ class WaylandShortcutWorker(QObject):
 
             r, _, _ = select.select(self._devices.keys(), [], [], 0.1)
             for fd in r:
+                if fd not in self._devices:
+                    continue
                 dev = self._devices[fd]
                 for event in dev.read():
                     if event.type != ecodes.EV_KEY:

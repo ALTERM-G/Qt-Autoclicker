@@ -8,18 +8,14 @@ from PySide6.QtQml import QQmlApplicationEngine, QQmlComponent
 from backend.controller import Controller
 
 _qml_objects = []
+_data_object = None
 _controller = None
-
 
 def cleanup():
     global _controller
     if _controller:
+        _controller.stop_clicking()
         _controller.cleanup_shortcuts()
-
-    for obj in _qml_objects:
-        if hasattr(obj, "deleteLater"):
-            obj.deleteLater()
-
 
 def main():
     global _controller
@@ -40,11 +36,12 @@ def main():
     data_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "data", "Data.qml"
     )
+    global _data_object
     if os.path.exists(data_path):
         data_component = QQmlComponent(engine, QUrl.fromLocalFile(data_path))
-        data_object = data_component.create()
-        _qml_objects.append(data_object)
-        engine.rootContext().setContextProperty("Data", data_object)
+        _data_object = data_component.create()
+        if _data_object:
+            engine.rootContext().setContextProperty("Data", _data_object)
 
     # --- Controller ---
     controller = Controller()
