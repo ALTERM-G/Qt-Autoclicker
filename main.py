@@ -19,6 +19,9 @@ def cleanup():
 
 def main():
     global _controller
+    import os
+    os.environ["QML_XHR_ALLOW_FILE_WRITE"] = "1"
+    os.environ["QML_XHR_ALLOW_FILE_READ"] = "1"
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
@@ -42,6 +45,7 @@ def main():
         _data_object = data_component.create()
         if _data_object:
             engine.rootContext().setContextProperty("Data", _data_object)
+            _data_object.loadSettings()
 
     # --- Controller ---
     controller = Controller()
@@ -60,7 +64,6 @@ def main():
 
     app.aboutToQuit.connect(cleanup)
     exit_code = app.exec()
-
     sys.exit(exit_code)
 
 

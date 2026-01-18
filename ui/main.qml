@@ -14,6 +14,10 @@ ApplicationWindow {
     maximumHeight: height
     title: "Autoclick and shortcut_manager"
 
+    Component.onCompleted: {
+        Data.loadSettings()
+    }
+
     Rectangle {
         id: background
         anchors.fill: parent

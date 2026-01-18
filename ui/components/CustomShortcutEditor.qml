@@ -12,14 +12,43 @@ Rectangle {
     border.color: Data.borderColor
 
     // == Public API ==
-    property string shortcutText: "Ctrl + Shift + S"
-    property int shortcutKey: Qt.Key_S
-    property int shortcutModifiers: Qt.ControlModifier | Qt.ShiftModifier
+    property string shortcutText: "Loading..."
+    property int shortcutKey: 0
+    property int shortcutModifiers: 0
 
     signal shortcutChanged(int key, int modifiers)
 
     // == Internal ==
     property bool recording: false
+
+// == Initialize from settings ==
+    Component.onCompleted: {
+        updateFromSettings()
+    }
+
+    Connections {
+        target: Data
+        function onSettingsLoaded() {
+            updateFromSettings()
+        }
+    }
+
+    function updateFromSettings() {
+        if (Data.settings && Data.settings.shortcuts && Data.settings.shortcuts.run) {
+            var settingsShortcut = Data.settings.shortcuts.run
+            shortcutKey = settingsShortcut.key
+            shortcutModifiers = settingsShortcut.modifiers
+
+            var parts = []
+            if (shortcutModifiers & Qt.ControlModifier) parts.push("Ctrl")
+            if (shortcutModifiers & Qt.AltModifier) parts.push("Alt")
+            if (shortcutModifiers & Qt.ShiftModifier) parts.push("Shift")
+            if (shortcutModifiers & Qt.MetaModifier) parts.push("Meta")
+            var keyName = keyToString(shortcutKey)
+            if (keyName !== "") parts.push(keyName)
+            shortcutText = parts.join(" + ")
+        }
+    }
 
     // == Display ==
     CustomText {
@@ -71,6 +100,7 @@ Rectangle {
     }
 
     // == Keyboard handling ==
+
     Keys.onPressed: function(event) {
         if (!recording)
             return
@@ -81,37 +111,28 @@ Rectangle {
             event.accepted = true
             return
         }
+
         let parts = []
-
-        if (event.modifiers & Qt.ControlModifier)
-            parts.push("Ctrl")
-        if (event.modifiers & Qt.AltModifier)
-            parts.push("Alt")
-        if (event.modifiers & Qt.ShiftModifier)
-            parts.push("Shift")
-        if (event.modifiers & Qt.MetaModifier)
-            parts.push("Meta")
-
+        if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
+        if (event.modifiers & Qt.AltModifier) parts.push("Alt")
+        if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
+        if (event.modifiers & Qt.MetaModifier) parts.push("Meta")
         let keyName = keyToString(event.key)
-        if (keyName === "")
-            return
+        if (keyName === "") return
         parts.push(keyName)
         shortcutKey = event.key
         shortcutModifiers = event.modifiers
         shortcutText = parts.join(" + ")
+
+        if (!Data.settings.shortcuts) Data.settings.shortcuts = {}
+        Data.settings.shortcuts.run = {
+            "key": shortcutKey,
+            "modifiers": shortcutModifiers
+        }
+        controller.save_settings_from_qml(JSON.stringify(Data.settings))
+
         shortcutChanged(shortcutKey, shortcutModifiers)
         recording = false
         event.accepted = true
-    }
-
-    Keys.onEscapePressed: function(event) {
-        recording = false
-        event.accepted = false
-    }
-
-    Behavior on color {
-        ColorAnimation {
-            duration: 150
-        }
     }
 }
