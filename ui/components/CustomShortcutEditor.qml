@@ -26,7 +26,6 @@ Rectangle {
         anchors.centerIn: parent
         text: recording ? "Press keys..." : root.shortcutText
         color: "white"
-        font.pixelSize: 14
         font.underline: false
     }
 
@@ -105,7 +104,14 @@ Rectangle {
         event.accepted = true
     }
 
-    Keys.onEscapePressed: {
+    Keys.onEscapePressed: function(event) {
         recording = false
+        event.accepted = false
+    }
+
+    Behavior on color {
+        ColorAnimation {
+            duration: 150
+        }
     }
 }

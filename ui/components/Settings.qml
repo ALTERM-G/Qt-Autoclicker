@@ -39,15 +39,13 @@ Item {
     Popup {
         id: settingsPopup
         width: 400
-        height: 300
+        height: 420
         parent: Overlay.overlay
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
         modal: true
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-
-        visible: false
         opacity: 0
         scale: 0.8
         Behavior on opacity { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
@@ -66,7 +64,9 @@ Item {
 
         background: AppRect {
             anchors.fill: parent
+
             CustomText {
+                id: title
                 text: "Settings"
                 anchors.top: parent.top
                 anchors.topMargin: 20
@@ -74,8 +74,8 @@ Item {
             }
 
             CustomShortcutEditor {
-                anchors.top: parent.top
-                anchors.topMargin: 20
+                anchors.top: title.top
+                anchors.topMargin: 40
                 anchors.horizontalCenter: parent.horizontalCenter
             }
         }
