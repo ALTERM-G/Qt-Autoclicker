@@ -69,7 +69,7 @@ ApplicationWindow {
             anchors.centerIn: parent
             anchors.topMargin: 100
             width: 400
-            height: 300
+            height: 420
 
             Column {
                 anchors.fill: parent
@@ -77,7 +77,7 @@ ApplicationWindow {
                 spacing: 10
 
                 CustomText {
-                    id: customText
+                    id: mouseSectionText
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "Mouse"
                 }
@@ -108,27 +108,39 @@ ApplicationWindow {
                     }
                 }
 
-                Row {
+                CustomText {
+                    id: keyboardSectionText
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 10
+                    text: "Keyboard"
+                }
+            }
+        }
 
-                    CustomButton {
-                        id: run_button
-                        buttonText: "Run (F6)"
-                        run: true
-                        onPressed: {
-                            controller.start_clicking(pressButton_comboBox.currentText, cpsSpin.value)
-                        }
-                    }
+        Row {
+            anchors.top: appRect.bottom
+            anchors.topMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 10
 
-                    CustomButton {
-                        id: stop_button
-                        buttonText: "Stop (ESC)"
-                        run: false
-                        onPressed: {
-                            controller.stop_clicking()
-                        }
-                    }
+            CustomButton {
+                id: run_button
+                buttonText: "(F6)"
+                run: true
+                iconSource: "../../assets/icons/run.svg"
+                hoverIconSource: "../../assets/icons/run_hover.svg"
+                onPressed: {
+                    controller.start_clicking(pressButton_comboBox.currentText, cpsSpin.value)
+                }
+            }
+
+            CustomButton {
+                id: stop_button
+                buttonText: "(ESC)"
+                run: false
+                iconSource: "../../assets/icons/stop.svg"
+                hoverIconSource: "../../assets/icons/stop_hover.svg"
+                onPressed: {
+                    controller.stop_clicking()
                 }
             }
         }

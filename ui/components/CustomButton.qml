@@ -11,22 +11,37 @@ Rectangle {
     signal pressed
     property string buttonText
     property bool run: false
+    property string iconSource: ""
+    property string hoverIconSource: ""
     Keys.onReturnPressed: doPress()
     Keys.onEnterPressed: doPress()
     function doPress() {
         pressed();
     }
 
-    Text {
+    Row {
         anchors.centerIn: parent
-        text: convertButton.buttonText
-        font.pixelSize: 18
-        font.family: Data.fontBold
-        color: mouseArea.containsMouse ? Data.hoverTextColor : Data.textColor
+        spacing: 8
 
-        Behavior on color {
-            ColorAnimation {
-                duration: 150
+        Image {
+            id: buttonIcon
+            source: mouseArea.containsMouse ? (hoverIconSource || iconSource) : iconSource
+            visible: iconSource !== ""
+            sourceSize: Qt.size(20, 20)
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Text {
+            text: convertButton.buttonText
+            font.pixelSize: 18
+            font.family: Data.fontBold
+            color: mouseArea.containsMouse ? Data.hoverTextColor : Data.textColor
+            anchors.verticalCenter: parent.verticalCenter
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: 150
+                }
             }
         }
     }
