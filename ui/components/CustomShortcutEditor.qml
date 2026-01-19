@@ -15,6 +15,7 @@ Rectangle {
     property string shortcutText: "Loading..."
     property int shortcutKey: 0
     property int shortcutModifiers: 0
+    property string shortcutType: "run"
 
     signal shortcutChanged(int key, int modifiers)
 
@@ -34,8 +35,8 @@ Rectangle {
     }
 
     function updateFromSettings() {
-        if (Data.settings && Data.settings.shortcuts && Data.settings.shortcuts.run) {
-            var settingsShortcut = Data.settings.shortcuts.run
+        if (Data.settings && Data.settings.shortcuts && Data.settings.shortcuts[shortcutType]) {
+            var settingsShortcut = Data.settings.shortcuts[shortcutType]
             shortcutKey = settingsShortcut.key
             shortcutModifiers = settingsShortcut.modifiers
 
@@ -125,7 +126,7 @@ Rectangle {
         shortcutText = parts.join(" + ")
 
         if (!Data.settings.shortcuts) Data.settings.shortcuts = {}
-        Data.settings.shortcuts.run = {
+        Data.settings.shortcuts[shortcutType] = {
             "key": shortcutKey,
             "modifiers": shortcutModifiers
         }

@@ -42,7 +42,8 @@ class Controller(QObject):
 
         return {
             "shortcuts": {
-                "run": {"key": KeyMapper.get_default_start_key()["qt"], "modifiers": 0}
+                "run": {"key": KeyMapper.default_start_key(), "modifiers": 0},
+                "stop": {"key": KeyMapper.default_stop_key(), "modifiers": 0},
             }
         }
 
@@ -50,11 +51,12 @@ class Controller(QObject):
         settings = self._load_settings()
         run_key = settings["shortcuts"]["run"]["key"]
         run_modifiers = settings["shortcuts"]["run"]["modifiers"]
-        stop_qt_key = KeyMapper.default_stop_key()
+        stop_qt_key = settings["shortcuts"]["stop"]["key"]
+        stop_modifiers = settings["shortcuts"]["stop"]["modifiers"]
 
         if not is_wayland():
             start_key = KeyMapper.qt_to_pynput(run_key, run_modifiers)
-            stop_key = KeyMapper.qt_to_pynput(stop_qt_key, 0)
+            stop_key = KeyMapper.qt_to_pynput(stop_qt_key, stop_modifiers)
 
             self._shortcut_worker = ShortcutWorker(
                 start_key=start_key,
@@ -62,7 +64,7 @@ class Controller(QObject):
             )
         else:
             start_key = KeyMapper.qt_to_evdev(run_key, run_modifiers)
-            stop_key = KeyMapper.qt_to_evdev(stop_qt_key, 0)
+            stop_key = KeyMapper.qt_to_evdev(stop_qt_key, stop_modifiers)
 
             self._shortcut_worker = WaylandShortcutWorker(
                 start_key=start_key,
@@ -105,6 +107,7 @@ class Controller(QObject):
     def save_settings_from_qml(self, settings_json):
         try:
             import json
+
             settings = json.loads(settings_json)
             with open(self._settings_path, "w") as f:
                 json.dump(settings, f, indent=2)

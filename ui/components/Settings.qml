@@ -111,6 +111,7 @@ Item {
                 CustomShortcutEditor {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: 2
+                    shortcutType: "run"
                 }
 
                 CustomText {
@@ -124,6 +125,7 @@ Item {
                 CustomShortcutEditor {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: 2
+                    shortcutType: "stop"
                 }
             }
         }
