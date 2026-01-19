@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Item {
     id: settingsMenu
@@ -46,37 +47,84 @@ Item {
         modal: true
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        opacity: 0
-        scale: 0.8
-        Behavior on opacity { NumberAnimation { duration: 200; easing.type: Easing.InOutQuad } }
-        Behavior on scale { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+        transformOrigin: Item.Center
 
-        onOpened: {
-            settingsPopup.visible = true
-            settingsPopup.opacity = 1
-            settingsPopup.scale = 1
+        enter: Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 200
+                    easing.type: Easing.InOutQuad
+                }
+                NumberAnimation {
+                    property: "scale"
+                    from: 0.8
+                    to: 1
+                    duration: 200
+                    easing.type: Easing.OutBack
+                }
+            }
         }
-        onClosed: {
-            settingsPopup.opacity = 0
-            settingsPopup.scale = 0.8
-            Qt.callLater(() => settingsPopup.visible = false)
+
+        exit: Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 160
+                    easing.type: Easing.InOutQuad
+                }
+                NumberAnimation {
+                    property: "scale"
+                    from: 1
+                    to: 0.85
+                    duration: 160
+                    easing.type: Easing.InQuad
+                }
+            }
         }
 
         background: AppRect {
             anchors.fill: parent
 
-            CustomText {
-                id: title
-                text: "Settings"
+            ColumnLayout {
                 anchors.top: parent.top
                 anchors.topMargin: 20
                 anchors.horizontalCenter: parent.horizontalCenter
-            }
 
-            CustomShortcutEditor {
-                anchors.top: title.top
-                anchors.topMargin: 40
-                anchors.horizontalCenter: parent.horizontalCenter
+                CustomText {
+                    text: "Settings"
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                CustomText {
+                    text: "Run Shortcut"
+                    style_2: true
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 15
+                }
+
+                CustomShortcutEditor {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 2
+                }
+
+                CustomText {
+                    text: "Stop shortcut"
+                    style_2: true
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 15
+                }
+
+                CustomShortcutEditor {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: 2
+                }
             }
         }
     }
