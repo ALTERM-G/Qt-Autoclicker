@@ -76,9 +76,11 @@ ApplicationWindow {
             height: 420
 
             Column {
+                id: mouseView
                 anchors.fill: parent
                 anchors.topMargin: 60
                 spacing: 12
+                visible: tabBar.currentIndex === 0
 
                 Column {
                     spacing: 3
@@ -106,9 +108,20 @@ ApplicationWindow {
                     spacing: 3
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    CustomText {
-                        text: "CPS"
-                        style_2: true
+                    Row {
+                        spacing: 3
+
+                        Image {
+                            source: "../assets/icons/chrono.svg"
+                            sourceSize: Qt.size(17, 17)
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                        }
+
+                        CustomText {
+                            text: "CPS"
+                            style_2: true
+                        }
                     }
 
                     CustomSpinBox {
@@ -124,6 +137,19 @@ ApplicationWindow {
                             controller.set_cps(value)
                         }
                     }
+                }
+            }
+
+            Column {
+                id: keyboardView
+                anchors.fill: parent
+                anchors.topMargin: 60
+                spacing: 12
+                visible: tabBar.currentIndex === 1
+
+                CustomText {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: "Keyboard section"
                 }
             }
         }
