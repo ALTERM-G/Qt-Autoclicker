@@ -112,6 +112,7 @@ Item {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: 2
                     shortcutType: "run"
+                    allowLonelyLetters: false
                 }
 
                 CustomText {
@@ -126,6 +127,22 @@ Item {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: 2
                     shortcutType: "stop"
+                    allowLonelyLetters: false
+                }
+
+                CustomText {
+                    text: "Themes"
+                    style_2: true
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 40
+                    Layout.topMargin: 15
+                }
+
+                CustomComboBox {
+                    model: ["Default","Light", "Dark"]
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 2
                 }
             }
         }

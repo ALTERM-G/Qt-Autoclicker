@@ -18,6 +18,13 @@ ApplicationWindow {
         Data.loadSettings()
     }
 
+    Shortcut {
+        sequence: "Ctrl+Tab"
+        onActivated: {
+            tabBar.currentIndex = (tabBar.currentIndex + 1) % tabBar.model.count
+        }
+    }
+
     Rectangle {
         id: background
         anchors.fill: parent
@@ -146,10 +153,66 @@ ApplicationWindow {
                 anchors.topMargin: 60
                 spacing: 12
                 visible: tabBar.currentIndex === 1
+                property var keyboardShortcut: ({ "key": Qt.Key_Space, "modifiers": 0, "text": "Space" })
 
-                CustomText {
+                Column {
+                    spacing: 3
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Keyboard section"
+
+                    CustomText {
+                        text: "Keyboard Key"
+                        style_2: true
+                    }
+
+                    CustomShortcutEditor {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        manageSettings: false
+                        allowModifiers: false
+                        shortcutText: keyboardView.keyboardShortcut.text
+                        
+                        onShortcutChanged: function(key, modifiers, shortcutAsText) {
+                            keyboardView.keyboardShortcut = {
+                                "key": key,
+                                "modifiers": modifiers,
+                                "text": shortcutAsText
+                            }
+                            console.log("Keyboard shortcut set to:", JSON.stringify(keyboardView.keyboardShortcut))
+                        }
+                    }
+                }
+
+                Column {
+                    spacing: 3
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Row {
+                        spacing: 3
+
+                        Image {
+                            source: "../assets/icons/chrono.svg"
+                            sourceSize: Qt.size(17, 17)
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                        }
+
+                        CustomText {
+                            text: "Keyboard CPS"
+                            style_2: true
+                        }
+                    }
+
+                    CustomSpinBox {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        Component.onCompleted: {
+                            cpsSpin.setFrom(1)
+                            cpsSpin.setTo(1000)
+                            cpsSpin.setValue(50)
+                            controller.set_cps(cpsSpin.value)
+                        }
+                        onValueChanged: {
+                            controller.set_cps(value)
+                        }
+                    }
                 }
             }
         }

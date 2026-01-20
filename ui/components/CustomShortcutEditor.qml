@@ -12,25 +12,32 @@ Rectangle {
     border.color: Data.borderColor
 
     // == Public API ==
-    property string shortcutText: "Loading..."
+    property bool allowLonelyLetters: true
+    property bool manageSettings: true
+    property bool allowModifiers: true
+    property string shortcutText: manageSettings ? "Loading..." : "Set Shortcut"
     property int shortcutKey: 0
     property int shortcutModifiers: 0
     property string shortcutType: "run"
 
-    signal shortcutChanged(int key, int modifiers)
+    signal shortcutChanged(int key, int modifiers, string shortcutAsText)
 
     // == Internal ==
     property bool recording: false
 
-// == Initialize from settings ==
+    // == Initialize from settings ==
     Component.onCompleted: {
-        updateFromSettings()
+        if (manageSettings) {
+            updateFromSettings()
+        }
     }
 
     Connections {
         target: Data
         function onSettingsLoaded() {
-            updateFromSettings()
+            if (manageSettings) {
+                updateFromSettings()
+            }
         }
     }
 
@@ -113,26 +120,48 @@ Rectangle {
             return
         }
 
-        let parts = []
-        if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
-        if (event.modifiers & Qt.AltModifier) parts.push("Alt")
-        if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
-        if (event.modifiers & Qt.MetaModifier) parts.push("Meta")
+        if (!allowLonelyLetters) {
+            var isLetter = (event.key >= Qt.Key_A && event.key <= Qt.Key_Z)
+            if (isLetter && (event.modifiers === 0 || event.modifiers === Qt.ShiftModifier)) {
+                console.log("Single letter shortcuts are not allowed here.")
+                return
+            }
+        }
+
         let keyName = keyToString(event.key)
         if (keyName === "") return
-        parts.push(keyName)
-        shortcutKey = event.key
-        shortcutModifiers = event.modifiers
-        shortcutText = parts.join(" + ")
 
-        if (!Data.settings.shortcuts) Data.settings.shortcuts = {}
-        Data.settings.shortcuts[shortcutType] = {
-            "key": shortcutKey,
-            "modifiers": shortcutModifiers
+        if (!allowModifiers) {
+            if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)) {
+                return;
+            }
+            shortcutKey = event.key
+            shortcutModifiers = 0
+            shortcutText = keyName
+        } else {
+            let parts = []
+            if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
+            if (event.modifiers & Qt.AltModifier) parts.push("Alt")
+            if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
+            if (event.modifiers & Qt.MetaModifier) parts.push("Meta")
+
+            parts.push(keyName)
+
+            shortcutKey = event.key
+            shortcutModifiers = event.modifiers
+            shortcutText = parts.join(" + ")
         }
-        controller.save_settings_from_qml(JSON.stringify(Data.settings))
 
-        shortcutChanged(shortcutKey, shortcutModifiers)
+        if (manageSettings) {
+            if (!Data.settings.shortcuts) Data.settings.shortcuts = {}
+                Data.settings.shortcuts[shortcutType] = {
+                "key": shortcutKey,
+                "modifiers": shortcutModifiers
+            }
+            controller.save_settings_from_qml(JSON.stringify(Data.settings))
+        }
+
+        shortcutChanged(shortcutKey, shortcutModifiers, shortcutText)
         recording = false
         event.accepted = true
     }

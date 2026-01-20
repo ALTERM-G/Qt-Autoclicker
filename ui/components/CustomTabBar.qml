@@ -39,7 +39,7 @@ Rectangle {
                     opacity: listView.currentIndex === index ? 1 : 0.6
 
                     Behavior on opacity {
-                        NumberAnimation { duration: 150; easing.type: Easing.InOutQuad }
+                        NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
                     }
                 }
 
@@ -70,7 +70,7 @@ Rectangle {
             x: listView.currentItem.x
 
             Behavior on x {
-                NumberAnimation { duration: 150; easing.type: Easing.InOutQuad }
+                NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
             }
 
             Rectangle {
