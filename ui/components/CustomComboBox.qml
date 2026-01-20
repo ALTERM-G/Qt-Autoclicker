@@ -3,7 +3,7 @@ import QtQuick.Controls
 
 ComboBox {
     id: control
-    width: 200
+    width: 240
     height: 40
     hoverEnabled: true
 
@@ -57,7 +57,7 @@ ComboBox {
 
     popup: Popup {
         width: control.width
-        implicitHeight: control.count * 50
+        implicitHeight: control.count * 43
 
         background: Rectangle {
             radius: 6
@@ -76,7 +76,7 @@ ComboBox {
                 delegate: ItemDelegate {
                     id: itemDelegate
                     width: parent ? parent.width : 200
-                    height: 43
+                    height: 35
 
                     contentItem: Text {
                         text: control.textRole ? model[control.textRole] : modelData

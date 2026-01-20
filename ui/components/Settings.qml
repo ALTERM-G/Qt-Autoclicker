@@ -7,11 +7,17 @@ Item {
     width: 40
     height: 40
 
+
     Rectangle {
         id: buttonRect
         width: 40
         height: 40
         color: "transparent"
+        scale: mouseArea.containsMouse ? 1.1 : 1.0
+
+        Behavior on scale {
+            NumberAnimation { duration: 150; easing.type: Easing.OutCubic }
+        }
 
         MouseArea {
             id: mouseArea
@@ -19,17 +25,14 @@ Item {
             hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             onClicked: {
-                if (settingsPopup.opened)
-                    settingsPopup.close()
-                else
-                    settingsPopup.open()
+                settingsPopup.opened ? settingsPopup.close() : settingsPopup.open()
             }
         }
 
         Image {
             source: mouseArea.containsMouse
-                    ? "../../assets/icons/settings_hover.svg"
-                    : "../../assets/icons/settings.svg"
+                ? "../../assets/icons/settings_hover.svg"
+                : "../../assets/icons/settings.svg"
             anchors.centerIn: parent
             sourceSize: Qt.size(40, 40)
             fillMode: Image.PreserveAspectFit
@@ -90,6 +93,16 @@ Item {
         background: AppRect {
             anchors.fill: parent
 
+            IconButton {
+                anchors.top: parent.top
+                anchors.topMargin: 10
+                anchors.left: parent.left
+                anchors.leftMargin: 10
+                iconPath: "../../assets/icons/back.svg"
+                hoverIconPath: "../../assets/icons/back_hover.svg"
+                onPressed: {settingsPopup.close()}
+            }
+
             ColumnLayout {
                 anchors.top: parent.top
                 anchors.topMargin: 20
@@ -134,14 +147,13 @@ Item {
                     text: "Themes"
                     style_2: true
                     Layout.fillWidth: true
-                    Layout.leftMargin: 40
+                    Layout.leftMargin: 20
                     Layout.topMargin: 15
                 }
 
                 CustomComboBox {
                     model: ["Default","Light", "Dark"]
                     Layout.fillWidth: true
-                    Layout.leftMargin: 20
                     Layout.topMargin: 2
                 }
             }

@@ -2,7 +2,9 @@ import QtQuick
 import QtQuick.Controls
 
 Rectangle {
-    id: settingsButton
+    id: iconButton
+    property string iconPath: ""
+    property string hoverIconPath: ""
     width: 40
     height: 40
     color: "transparent"
@@ -18,18 +20,24 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: settingsButton.doPress()
+        onClicked: iconButton.doPress()
     }
 
     Image {
         source: mouseArea.containsMouse
-                ? "../../assets/icons/settings_hover.svg"
-                : "../../assets/icons/settings.svg"
+                ? hoverIconPath
+                : iconPath
         sourceSize: Qt.size(width, height)
         anchors.centerIn: parent
         width: 40
         height: 40
         fillMode: Image.PreserveAspectFit
         smooth: true
+    }
+
+    scale: mouseArea.containsMouse ? 1.1 : 1.0
+
+    Behavior on scale {
+        NumberAnimation { duration: 150; easing.type: Easing.OutCubic }
     }
 }

@@ -5,12 +5,10 @@ from evdev import ecodes
 from pathlib import Path
 import json
 
-from backend.Workers.pynput_worker import PynputClickWorker
-from backend.Workers.wayland_worker import WaylandClickWorker
-from backend.Workers.shortcut_worker import ShortcutWorker
-from backend.Workers.wayland_shortcut_worker import WaylandShortcutWorker
-from backend.utils.platform import is_wayland
-from backend.utils.key_mapper import KeyMapper
+from backend.Workers.MouseClicking import PynputClickWorker, WaylandClickWorker
+from backend.Workers.KeyboardClicking import PynputKeyboardWorker, WaylandKeyboardWorker
+from backend.Workers.ShortcutHandling import ShortcutWorker, WaylandShortcutWorker
+from backend.utils import KeyMapper, is_wayland
 
 
 class Controller(QObject):
@@ -18,11 +16,14 @@ class Controller(QObject):
 
     def __init__(self):
         super().__init__()
-        self._thread = None
-        self._worker = None
+        self._mouse_worker = None
+        self._mouse_thread = None
+        self._keyboard_worker = None
+        self._keyboard_thread = None
         self._shortcut_thread = None
         self._shortcut_worker = None
         self._button = "left"
+        self._keyboard_char = "a"
         self._cps = 50
         self._settings_path = Path(__file__).parent.parent / "data" / "Settings.json"
         self._settings_last_modified = 0
@@ -131,61 +132,83 @@ class Controller(QObject):
         self.start_clicking(self._button, self._cps)
 
     @Slot(str, int)
-    def start_clicking(self, button, cps):
-        if self._thread and self._thread.isRunning():
-            self.status_update.emit("Already clicking")
-            return
-
+    def start_clicking(self, button, cps, keyboard_text=None):
         interval = 1.0 / cps
         screen = QGuiApplication.primaryScreen()
         geometry = screen.geometry()
         center_x = geometry.width() // 2
         center_y = geometry.height() // 2
 
+        # ---------------- Mouse Worker ----------------
         if is_wayland():
-            self.status_update.emit("Wayland mode: clicking screen center")
-            self._worker = WaylandClickWorker(
-                button=button,
-                interval=interval,
-                x=center_x,
-                y=center_y,
+            self._mouse_worker = WaylandClickWorker(
+                button=button, interval=interval, x=center_x, y=center_y
             )
         else:
-            self._worker = PynputClickWorker(button, interval)
+            self._mouse_worker = PynputClickWorker(button=button, interval=interval)
 
-        self._thread = QThread()
-        self._worker.moveToThread(self._thread)
+        self._mouse_thread = QThread()
+        self._mouse_worker.moveToThread(self._mouse_thread)
+        self._mouse_thread.started.connect(self._mouse_worker.start_clicking)
+        self._mouse_worker.finished.connect(self._cleanup_mouse)
+        self._mouse_worker.status.connect(self.status_update)
+        self._mouse_thread.start()
 
-        self._thread.started.connect(self._worker.start_clicking)
-        self._worker.finished.connect(self._cleanup)
-        self._worker.status.connect(self.status_update)
+        # ---------------- Keyboard Worker ----------------
+        if keyboard_text:
+            self._keyboard_text = keyboard_text
+            if is_wayland():
+                self._keyboard_worker = WaylandKeyboardWorker(
+                    text=self._keyboard_text, interval=interval
+                )
+            else:
+                self._keyboard_worker = PynputKeyboardWorker(
+                    text=self._keyboard_text, interval=interval
+                )
 
-        self._thread.start()
+            self._keyboard_thread = QThread()
+            self._keyboard_worker.moveToThread(self._keyboard_thread)
+            self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
+            self._keyboard_worker.finished.connect(self._cleanup_keyboard)
+            self._keyboard_worker.status.connect(self.status_update)
+            self._keyboard_thread.start()
 
     @Slot()
     def stop_clicking(self):
-        if self._worker:
-            self._worker.stop_clicking()
+        if self._mouse_worker:
+            self._mouse_worker.stop_clicking()
+            if self._keyboard_worker:
+                self._keyboard_worker.stop_typing()
 
-    def _cleanup(self):
-        if self._thread:
-            self._thread.quit()
-            self._thread.wait()
-        if self._worker:
-            self._worker.deleteLater()
-        if self._thread:
-            self._thread.deleteLater()
-        self._worker = None
-        self._thread = None
-        self.status_update.emit("Stopped")
+    def _cleanup_mouse(self):
+        if self._mouse_thread:
+            self._mouse_thread.quit()
+            self._mouse_thread.wait()
+            if self._mouse_worker:
+                self._mouse_worker.deleteLater()
+                if self._mouse_thread:
+                    self._mouse_thread.deleteLater()
+                    self._mouse_worker = None
+                    self._mouse_thread = None
+
+    def _cleanup_keyboard(self):
+        if self._keyboard_thread:
+            self._keyboard_thread.quit()
+            self._keyboard_thread.wait()
+            if self._keyboard_worker:
+                self._keyboard_worker.deleteLater()
+                if self._keyboard_thread:
+                    self._keyboard_thread.deleteLater()
+                    self._keyboard_worker = None
+                    self._keyboard_thread = None
 
     def cleanup_shortcuts(self):
         try:
             if self._shortcut_worker:
                 self._shortcut_worker.stop_listening()
-            if self._shortcut_thread and self._shortcut_thread.isRunning():
-                self._shortcut_thread.quit()
-                self._shortcut_thread.wait()
+                if self._shortcut_thread and self._shortcut_thread.isRunning():
+                    self._shortcut_thread.quit()
+                    self._shortcut_thread.wait()
         except RuntimeError:
             pass
 
