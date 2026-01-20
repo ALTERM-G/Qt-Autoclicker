@@ -27,7 +27,7 @@ Rectangle {
             id: buttonIcon
             source: mouseArea.containsMouse ? (hoverIconSource || iconSource) : iconSource
             visible: iconSource !== ""
-            sourceSize: Qt.size(20, 20)
+            sourceSize: Qt.size(17, 17)
             anchors.verticalCenter: parent.verticalCenter
         }
 

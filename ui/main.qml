@@ -78,31 +78,51 @@ ApplicationWindow {
             Column {
                 anchors.fill: parent
                 anchors.topMargin: 60
-                spacing: 10
+                spacing: 12
 
-                CustomComboBox {
-                    id: pressButton_comboBox
+                Column {
+                    spacing: 3
                     anchors.horizontalCenter: parent.horizontalCenter
-                    model: ["left", "right"]
-                    onCurrentTextChanged: {
-                        controller.set_button(currentText)
+
+                    CustomText {
+                        text: "Mouse Button"
+                        style_2: true
                     }
-                    Component.onCompleted: {
-                        controller.set_button(currentText)
+
+                    CustomComboBox {
+                        id: pressButton_comboBox
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        model: ["left", "right"]
+                        onCurrentTextChanged: {
+                            controller.set_button(currentText)
+                        }
+                        Component.onCompleted: {
+                            controller.set_button(currentText)
+                        }
                     }
                 }
 
-                CustomSpinBox {
-                    id: cpsSpin
+                Column {
+                    spacing: 3
                     anchors.horizontalCenter: parent.horizontalCenter
-                    Component.onCompleted: {
-                        cpsSpin.setFrom(1)
-                        cpsSpin.setTo(1000)
-                        cpsSpin.setValue(50)
-                        controller.set_cps(cpsSpin.value)
+
+                    CustomText {
+                        text: "CPS"
+                        style_2: true
                     }
-                    onValueChanged: {
-                        controller.set_cps(value)
+
+                    CustomSpinBox {
+                        id: cpsSpin
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        Component.onCompleted: {
+                            cpsSpin.setFrom(1)
+                            cpsSpin.setTo(1000)
+                            cpsSpin.setValue(50)
+                            controller.set_cps(cpsSpin.value)
+                        }
+                        onValueChanged: {
+                            controller.set_cps(value)
+                        }
                     }
                 }
             }
@@ -125,7 +145,7 @@ ApplicationWindow {
 
             CustomButton {
                 id: run_button
-                buttonText: "(F6)"
+                buttonText: "Run"
                 run: true
                 iconSource: "../../assets/icons/run.svg"
                 hoverIconSource: "../../assets/icons/run_hover.svg"
@@ -136,7 +156,7 @@ ApplicationWindow {
 
             CustomButton {
                 id: stop_button
-                buttonText: "(ESC)"
+                buttonText: "Stop"
                 run: false
                 iconSource: "../../assets/icons/stop.svg"
                 hoverIconSource: "../../assets/icons/stop_hover.svg"
