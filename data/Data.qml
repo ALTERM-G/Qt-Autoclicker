@@ -16,12 +16,25 @@ QtObject {
     readonly property color hoverTextColor: "#2A2A2A"
     readonly property color dividerColor: "#333333"
 
+    // -- Tab --
+    property ListModel tabModel: ListModel {
+        ListElement {
+            name: "Mouse"
+            icon: "../../assets/icons/mouse.svg"
+            hoverIcon: "../../assets/icons/mouse_hover.svg"
+        }
+        ListElement {
+            name: "Keyboard"
+            icon: "../../assets/icons/keyboard.svg"
+            hoverIcon: "../../assets/icons/keyboard_hover.svg"
+        }
+    }
+
     // -- Settings --
     property var settings: { "shortcuts": {} }
-    
     signal settingsSaved()
     signal settingsLoaded()
-    
+
     function loadSettings() {
         var file = Qt.resolvedUrl("Settings.json")
         var xhr = new XMLHttpRequest()
@@ -39,7 +52,7 @@ QtObject {
         }
         xhr.send()
     }
-    
+
     function saveSettings() {
         var file = Qt.resolvedUrl("Settings.json")
         var xhr = new XMLHttpRequest()

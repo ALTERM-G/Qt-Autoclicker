@@ -77,14 +77,8 @@ ApplicationWindow {
 
             Column {
                 anchors.fill: parent
-                anchors.topMargin: 40
+                anchors.topMargin: 60
                 spacing: 10
-
-                CustomText {
-                    id: mouseSectionText
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Mouse"
-                }
 
                 CustomComboBox {
                     id: pressButton_comboBox
@@ -111,13 +105,16 @@ ApplicationWindow {
                         controller.set_cps(value)
                     }
                 }
-
-                CustomText {
-                    id: keyboardSectionText
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Keyboard"
-                }
             }
+        }
+
+        CustomTabBar {
+            id: tabBar
+            anchors.top: appRect.top
+            anchors.topMargin: 10
+            anchors.left: appRect.left
+            anchors.leftMargin: 10
+            model: Data.tabModel
         }
 
         Row {
