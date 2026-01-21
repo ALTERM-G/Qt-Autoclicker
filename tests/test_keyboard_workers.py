@@ -12,8 +12,8 @@ wayland_mock = MagicMock()
 sys.modules['wayland_automation'] = wayland_mock
 sys.modules['wayland_automation.keyboard_controller'] = wayland_mock.keyboard_controller
 
-from backend.Workers.KeyboardClicking.pynput_keyboard import PynputKeyboardWorker
-from backend.Workers.KeyboardClicking.wayland_keyboard import WaylandKeyboardWorker
+from backend.workers.keyboard_clicking.pynput_keyboard import PynputKeyboardWorker
+from backend.workers.keyboard_clicking.wayland_keyboard import WaylandKeyboardWorker
 
 class MockKeyboard:
     def press(self, key):

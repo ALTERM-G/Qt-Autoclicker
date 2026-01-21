@@ -5,9 +5,9 @@ from evdev import ecodes
 from pathlib import Path
 import json
 
-from backend.Workers.MouseClicking import PynputClickWorker, WaylandClickWorker
-from backend.Workers.KeyboardClicking import PynputKeyboardWorker, WaylandKeyboardWorker
-from backend.Workers.ShortcutHandling import ShortcutWorker, WaylandShortcutWorker
+from backend.workers.mouse_clicking import PynputClickWorker, WaylandClickWorker
+from backend.workers.keyboard_clicking import PynputKeyboardWorker, WaylandKeyboardWorker
+from backend.workers.shortcut_handling import ShortcutWorker, WaylandShortcutWorker
 from backend.utils import KeyMapper, is_wayland
 
 

@@ -14,8 +14,8 @@ wayland_mock = MagicMock()
 sys.modules['wayland_automation'] = wayland_mock
 sys.modules['wayland_automation.mouse_controller'] = wayland_mock.mouse_controller
 
-from backend.Workers.MouseClicking.pynput_mouse import PynputClickWorker
-from backend.Workers.MouseClicking.wayland_mouse import WaylandClickWorker
+from backend.workers.mouse_clicking.pynput_mouse import PynputClickWorker
+from backend.workers.mouse_clicking.wayland_mouse import WaylandClickWorker
 
 class MockMouse:
     def __init__(self):
