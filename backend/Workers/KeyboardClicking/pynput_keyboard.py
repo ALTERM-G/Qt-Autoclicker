@@ -1,5 +1,5 @@
 from PySide6.QtCore import QObject, Signal
-from pynput.keyboard import Controller
+from pynput.keyboard import Controller, Key
 import time
 
 
@@ -17,9 +17,18 @@ class PynputKeyboardWorker(QObject):
     def start_typing(self):
         self.typing = True
         self.status.emit(f"Typing '{self.char}' started (pynput)")
+
+        special_keys = {
+            " ": Key.space,
+            "\n": Key.enter,
+            "\t": Key.tab,
+            "\b": Key.backspace,
+        }
+        key_to_type = special_keys.get(self.char, self.char)
+
         while self.typing:
-            self.keyboard.press(self.char)
-            self.keyboard.release(self.char)
+            self.keyboard.press(key_to_type)
+            self.keyboard.release(key_to_type)
             time.sleep(self.interval)
         self.finished.emit()
 

@@ -55,6 +55,7 @@ Rectangle {
             var keyName = keyToString(shortcutKey)
             if (keyName !== "") parts.push(keyName)
             shortcutText = parts.join(" + ")
+            shortcutChanged(shortcutKey, shortcutModifiers, shortcutText)
         }
     }
 

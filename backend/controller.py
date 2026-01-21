@@ -24,6 +24,7 @@ class Controller(QObject):
         self._shortcut_worker = None
         self._button = "left"
         self._keyboard_char = "a"
+        self._current_view = "mouse"
         self._cps = 50
         self._settings_path = Path(__file__).parent.parent / "data" / "Settings.json"
         self._settings_last_modified = 0
@@ -127,11 +128,22 @@ class Controller(QObject):
     def set_cps(self, cps):
         self._cps = cps
 
+    @Slot(str)
+    def set_keyboard_char(self, char):
+        self._keyboard_char = char
+
+    @Slot(str)
+    def set_current_view(self, view):
+        self._current_view = view
+
     @Slot()
     def start_clicking_shortcut(self):
-        self.start_clicking(self._button, self._cps)
+        if self._current_view == "mouse":
+            self.start_clicking(self._button, self._cps)
+        elif self._current_view == "keyboard":
+            self.start_clicking(None, self._cps, self._keyboard_char)
 
-    @Slot(str, int)
+    @Slot(str, int, str)
     def start_clicking(self, button, cps, keyboard_text=None):
         interval = 1.0 / cps
         screen = QGuiApplication.primaryScreen()
@@ -140,45 +152,62 @@ class Controller(QObject):
         center_y = geometry.height() // 2
 
         # ---------------- Mouse Worker ----------------
-        if is_wayland():
-            self._mouse_worker = WaylandClickWorker(
-                button=button, interval=interval, x=center_x, y=center_y
-            )
-        else:
-            self._mouse_worker = PynputClickWorker(button=button, interval=interval)
+        if button in ("left", "right"):
+            if is_wayland():
+                self._mouse_worker = WaylandClickWorker(
+                    button=button, interval=interval, x=center_x, y=center_y
+                )
+            else:
+                self._mouse_worker = PynputClickWorker(button=button, interval=interval)
 
-        self._mouse_thread = QThread()
-        self._mouse_worker.moveToThread(self._mouse_thread)
-        self._mouse_thread.started.connect(self._mouse_worker.start_clicking)
-        self._mouse_worker.finished.connect(self._cleanup_mouse)
-        self._mouse_worker.status.connect(self.status_update)
-        self._mouse_thread.start()
+            self._mouse_thread = QThread()
+            self._mouse_worker.moveToThread(self._mouse_thread)
+            self._mouse_thread.started.connect(self._mouse_worker.start_clicking)
+            self._mouse_worker.finished.connect(self._cleanup_mouse)
+            self._mouse_worker.status.connect(self.status_update)
+            self._mouse_thread.start()
 
         # ---------------- Keyboard Worker ----------------
         if keyboard_text:
-            self._keyboard_text = keyboard_text
+            special_keys = {
+                "Space": " ",
+                "Enter": "\n",
+                "Tab": "\t",
+                "Backspace": "\b",
+            }
+
+            if keyboard_text in special_keys:
+                self._keyboard_text = special_keys[keyboard_text]
+            else:
+                self._keyboard_text = keyboard_text
+
             if is_wayland():
                 self._keyboard_worker = WaylandKeyboardWorker(
-                    text=self._keyboard_text, interval=interval
+                    char=self._keyboard_text, interval=interval
                 )
+                self._keyboard_thread = QThread()
+                self._keyboard_worker.moveToThread(self._keyboard_thread)
+                self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
+                self._keyboard_worker.finished.connect(self._cleanup_keyboard)
+                self._keyboard_worker.status.connect(self.status_update)
+                self._keyboard_thread.start()
             else:
                 self._keyboard_worker = PynputKeyboardWorker(
-                    text=self._keyboard_text, interval=interval
+                    char=self._keyboard_text, interval=interval
                 )
-
-            self._keyboard_thread = QThread()
-            self._keyboard_worker.moveToThread(self._keyboard_thread)
-            self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
-            self._keyboard_worker.finished.connect(self._cleanup_keyboard)
-            self._keyboard_worker.status.connect(self.status_update)
-            self._keyboard_thread.start()
+                self._keyboard_thread = QThread()
+                self._keyboard_worker.moveToThread(self._keyboard_thread)
+                self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
+                self._keyboard_worker.finished.connect(self._cleanup_keyboard)
+                self._keyboard_worker.status.connect(self.status_update)
+                self._keyboard_thread.start()
 
     @Slot()
     def stop_clicking(self):
         if self._mouse_worker:
             self._mouse_worker.stop_clicking()
-            if self._keyboard_worker:
-                self._keyboard_worker.stop_typing()
+        if self._keyboard_worker:
+            self._keyboard_worker.stop_typing()
 
     def _cleanup_mouse(self):
         if self._mouse_thread:

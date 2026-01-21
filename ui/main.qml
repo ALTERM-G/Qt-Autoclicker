@@ -153,7 +153,7 @@ ApplicationWindow {
                 anchors.topMargin: 60
                 spacing: 12
                 visible: tabBar.currentIndex === 1
-                property var keyboardShortcut: ({ "key": Qt.Key_Space, "modifiers": 0, "text": "Space" })
+                property var keyboardShortcut: ({ "key": Qt.Key_A, "modifiers": 0, "text": "a" })
 
                 Column {
                     spacing: 3
@@ -165,18 +165,23 @@ ApplicationWindow {
                     }
 
                     CustomShortcutEditor {
+                        id: keyboardShortcutEditor
                         anchors.horizontalCenter: parent.horizontalCenter
                         manageSettings: false
                         allowModifiers: false
                         shortcutText: keyboardView.keyboardShortcut.text
-                        
+
                         onShortcutChanged: function(key, modifiers, shortcutAsText) {
                             keyboardView.keyboardShortcut = {
                                 "key": key,
                                 "modifiers": modifiers,
                                 "text": shortcutAsText
                             }
-                            console.log("Keyboard shortcut set to:", JSON.stringify(keyboardView.keyboardShortcut))
+                            controller.set_keyboard_char(shortcutAsText)
+                        }
+
+                        Component.onCompleted: {
+                            controller.set_keyboard_char(keyboardView.keyboardShortcut.text)
                         }
                     }
                 }
@@ -184,17 +189,14 @@ ApplicationWindow {
                 Column {
                     spacing: 3
                     anchors.horizontalCenter: parent.horizontalCenter
-
                     Row {
                         spacing: 3
-
                         Image {
                             source: "../assets/icons/chrono.svg"
                             sourceSize: Qt.size(17, 17)
                             fillMode: Image.PreserveAspectFit
                             smooth: true
                         }
-
                         CustomText {
                             text: "Keyboard CPS"
                             style_2: true
@@ -202,12 +204,13 @@ ApplicationWindow {
                     }
 
                     CustomSpinBox {
+                        id: keyboardCpsSpin
                         anchors.horizontalCenter: parent.horizontalCenter
                         Component.onCompleted: {
-                            cpsSpin.setFrom(1)
-                            cpsSpin.setTo(1000)
-                            cpsSpin.setValue(50)
-                            controller.set_cps(cpsSpin.value)
+                            keyboardCpsSpin.setFrom(1)
+                            keyboardCpsSpin.setTo(1000)
+                            keyboardCpsSpin.setValue(50)
+                            controller.set_cps(keyboardCpsSpin.value)
                         }
                         onValueChanged: {
                             controller.set_cps(value)
@@ -224,6 +227,15 @@ ApplicationWindow {
             anchors.left: appRect.left
             anchors.leftMargin: 10
             model: Data.tabModel
+
+            Component.onCompleted: controller.set_current_view("mouse")
+            onCurrentIndexChanged: {
+                if (currentIndex === 0) {
+                    controller.set_current_view("mouse")
+                } else if (currentIndex === 1) {
+                    controller.set_current_view("keyboard")
+                }
+            }
         }
 
         Row {
@@ -239,7 +251,18 @@ ApplicationWindow {
                 iconSource: "../../assets/icons/run.svg"
                 hoverIconSource: "../../assets/icons/run_hover.svg"
                 onPressed: {
-                    controller.start_clicking(pressButton_comboBox.currentText, cpsSpin.value)
+                    if (tabBar.currentIndex === 0) {
+                        controller.start_clicking(
+                            pressButton_comboBox.currentText,
+                            cpsSpin.value
+                        )
+                    } else if (tabBar.currentIndex === 1) {
+                        controller.start_clicking(
+                            null,
+                            keyboardCpsSpin.value,
+                            keyboardShortcutEditor.shortcutText
+                        )
+                    }
                 }
             }
 
