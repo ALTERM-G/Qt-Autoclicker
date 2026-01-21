@@ -9,5 +9,7 @@ dependencies = [
     "pygobject>=3.54.5",
     "pynput>=1.8.1",
     "pyside6>=6.10.1",
+    "pytest>=9.0.2",
+    "pytest-qt>=4.5.0",
     "wayland-automation>=0.2.6",
 ]

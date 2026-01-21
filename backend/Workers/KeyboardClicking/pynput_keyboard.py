@@ -7,7 +7,7 @@ class PynputKeyboardWorker(QObject):
     finished = Signal()
     status = Signal(str)
 
-    def __init__(self, char="a", interval=0.1):
+    def __init__(self, char, interval=0.1):
         super().__init__()
         self.char = char
         self.interval = interval

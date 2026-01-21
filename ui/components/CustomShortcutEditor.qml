@@ -84,7 +84,7 @@ Rectangle {
             return "F" + (key - Qt.Key_F1 + 1)
         // Letters
         if (key >= Qt.Key_A && key <= Qt.Key_Z)
-            return String.fromCharCode(key)
+            return String.fromCharCode(key).toUpperCase()
         // Numbers
         if (key >= Qt.Key_0 && key <= Qt.Key_9)
             return String.fromCharCode(key)

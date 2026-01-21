@@ -153,7 +153,7 @@ ApplicationWindow {
                 anchors.topMargin: 60
                 spacing: 12
                 visible: tabBar.currentIndex === 1
-                property var keyboardShortcut: ({ "key": Qt.Key_A, "modifiers": 0, "text": "a" })
+                property var keyboardShortcut: ({ "key": Qt.Key_A, "modifiers": 0, "text": "A" })
 
                 Column {
                     spacing: 3
@@ -254,7 +254,8 @@ ApplicationWindow {
                     if (tabBar.currentIndex === 0) {
                         controller.start_clicking(
                             pressButton_comboBox.currentText,
-                            cpsSpin.value
+                            cpsSpin.value,
+                            null
                         )
                     } else if (tabBar.currentIndex === 1) {
                         controller.start_clicking(

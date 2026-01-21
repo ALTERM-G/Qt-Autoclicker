@@ -23,7 +23,7 @@ class Controller(QObject):
         self._shortcut_thread = None
         self._shortcut_worker = None
         self._button = "left"
-        self._keyboard_char = "a"
+        self._keyboard_char = "A"
         self._current_view = "mouse"
         self._cps = 50
         self._settings_path = Path(__file__).parent.parent / "data" / "Settings.json"
