@@ -1,2 +1,4 @@
 module Data
 singleton Data 1.0 Data.qml
+singleton Theme 1.0 Theme.qml
+singleton SVGLibrary 1.0 SVGLibrary.qml

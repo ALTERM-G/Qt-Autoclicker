@@ -12,8 +12,8 @@ ComboBox {
         text: control.displayText !== "" ? control.displayText : "Select"
         anchors.fill: parent
         font.pixelSize: 18
-        font.family: Data.fontBold
-        color: mouseArea.containsMouse ? Data.hoverTextColor : Data.textColor
+        font.family: Theme.fontBold
+        color: mouseArea.containsMouse ? Theme.hoverTextColor() : Theme.textColor()
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
@@ -36,8 +36,8 @@ ComboBox {
     background: Rectangle {
         anchors.fill: parent
         radius: 6
-        color: mouseArea.containsMouse ? Data.hoverBackgroundColor : Data.backgroundColor
-        border.color: Data.borderColor
+        color: mouseArea.containsMouse ? Theme.hoverBackgroundColor() : Theme.backgroundColor()
+        border.color: Theme.borderColor()
         border.width: 3
 
         Behavior on color {
@@ -61,8 +61,8 @@ ComboBox {
 
         background: Rectangle {
             radius: 6
-            color: Data.backgroundColor
-            border.color: Data.borderColor
+            color: Theme.backgroundColor()
+            border.color: Theme.borderColor()
             border.width: 3
         }
 
@@ -81,15 +81,15 @@ ComboBox {
                     contentItem: Text {
                         text: control.textRole ? model[control.textRole] : modelData
                         font.pixelSize: 18
-                        font.family: Data.fontBold
-                        color: itemDelegate.hovered ? Data.hoverTextColor : Data.textColor
+                        font.family: Theme.fontBold
+                        color: itemDelegate.hovered ? Theme.hoverTextColor() : Theme.textColor()
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }
 
                     background: Rectangle {
                         anchors.fill: parent
-                        color: itemDelegate.hovered ? Data.themeColor : "transparent"
+                        color: itemDelegate.hovered ? Theme.themeColor() : "transparent"
                         radius: 6
                     }
 

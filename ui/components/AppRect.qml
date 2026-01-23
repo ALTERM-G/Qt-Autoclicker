@@ -3,7 +3,7 @@ import QtQuick
 Rectangle {
     id: root
     radius: 6
-    color: Data.backgroundColor
-    border.color: Data.dividerColor
+    color: Theme.backgroundColor()
+    border.color: Theme.dividerColor()
     border.width: 2
 }

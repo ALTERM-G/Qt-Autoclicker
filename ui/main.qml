@@ -21,19 +21,19 @@ ApplicationWindow {
     Shortcut {
         sequence: "Ctrl+Tab"
         onActivated: {
-            tabBar.currentIndex = (tabBar.currentIndex + 1) % tabBar.model.count
+            tabBar.currentIndex = (tabBar.currentIndex + 1) % Data.tabs.length
         }
     }
 
     Rectangle {
         id: background
         anchors.fill: parent
-        color: Data.appBackgroundColor
+        color: Theme.appBackgroundColor()
 
         Rectangle {
             id: topBar
             height: 75
-            color: Data.topBarColor
+            color: Theme.topBarColor()
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
@@ -41,14 +41,14 @@ ApplicationWindow {
             Rectangle {
                 id: divider
                 height: 2
-                color: Data.dividerColor
+                color: Theme.dividerColor()
                 width: parent.width
                 anchors.bottom: parent.bottom
             }
 
             Text {
                 id: title_ASCII
-                color: Data.themeColor
+                color: Theme.themeColor()
                 anchors.left: topBar.left
                 anchors.verticalCenter: topBar.verticalCenter
                 anchors.leftMargin: 10
@@ -62,7 +62,7 @@ ApplicationWindow {
                     "╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝        ╚═════╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝"
 
                 font.pointSize: 4
-                font.family: Data.fontRegular
+                font.family: Theme.fontRegular
                 wrapMode: Text.NoWrap
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
@@ -118,11 +118,11 @@ ApplicationWindow {
                     Row {
                         spacing: 3
 
-                        Image {
-                            source: "../assets/icons/chrono.svg"
-                            sourceSize: Qt.size(17, 17)
-                            fillMode: Image.PreserveAspectFit
-                            smooth: true
+                        SVGObject {
+                            path: SVGLibrary.chrono
+                            width: 17
+                            height: 17
+                            color: Theme.borderColor()
                         }
 
                         CustomText {
@@ -191,12 +191,14 @@ ApplicationWindow {
                     anchors.horizontalCenter: parent.horizontalCenter
                     Row {
                         spacing: 3
-                        Image {
-                            source: "../assets/icons/chrono.svg"
-                            sourceSize: Qt.size(17, 17)
-                            fillMode: Image.PreserveAspectFit
-                            smooth: true
+
+                        SVGObject {
+                            path: SVGLibrary.chrono
+                            width: 17
+                            height: 17
+                            color: Theme.borderColor()
                         }
+
                         CustomText {
                             text: "Keyboard CPS"
                             style_2: true
@@ -226,7 +228,7 @@ ApplicationWindow {
             anchors.topMargin: 10
             anchors.left: appRect.left
             anchors.leftMargin: 10
-            model: Data.tabModel
+            tabData: Data.tabs
 
             Component.onCompleted: controller.set_current_view("mouse")
             onCurrentIndexChanged: {
@@ -248,8 +250,7 @@ ApplicationWindow {
                 id: run_button
                 buttonText: "Run"
                 run: true
-                iconSource: "../../assets/icons/run.svg"
-                hoverIconSource: "../../assets/icons/run_hover.svg"
+                iconPath: SVGLibrary.run
                 onPressed: {
                     if (tabBar.currentIndex === 0) {
                         controller.start_clicking(
@@ -271,8 +272,7 @@ ApplicationWindow {
                 id: stop_button
                 buttonText: "Stop"
                 run: false
-                iconSource: "../../assets/icons/stop.svg"
-                hoverIconSource: "../../assets/icons/stop_hover.svg"
+                iconPath: SVGLibrary.stop
                 onPressed: {
                     controller.stop_clicking()
                 }

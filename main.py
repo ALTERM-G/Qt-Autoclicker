@@ -2,7 +2,7 @@ import os
 import sys
 
 from PySide6.QtCore import QUrl
-from PySide6.QtGui import QFontDatabase, QGuiApplication
+from PySide6.QtGui import QFontDatabase, QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine, QQmlComponent
 
 from backend.controller import Controller
@@ -25,6 +25,18 @@ def main():
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
+    def load_qml(engine, filename, context_name, callback=None):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", filename)
+        if os.path.exists(path):
+            component = QQmlComponent(engine, QUrl.fromLocalFile(path))
+            obj = component.create()
+            if obj:
+                engine.rootContext().setContextProperty(context_name, obj)
+                if callback:
+                    callback(obj)
+            return obj
+        return None
+
     # --- Load fonts ---
     assets_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
     font_dir = os.path.join(assets_path, "fonts")
@@ -35,17 +47,15 @@ def main():
                 font_id = QFontDatabase.addApplicationFont(font_path)
                 family = QFontDatabase.applicationFontFamilies(font_id)[0]
 
-    # --- Load Data.qml ---
-    data_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "data", "Data.qml"
-    )
-    global _data_object
-    if os.path.exists(data_path):
-        data_component = QQmlComponent(engine, QUrl.fromLocalFile(data_path))
-        _data_object = data_component.create()
-        if _data_object:
-            engine.rootContext().setContextProperty("Data", _data_object)
-            _data_object.loadSettings()
+    # --- Icons ---
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    icon_path = os.path.join(base_path, "assets", "icons")
+    QIcon.setThemeSearchPaths([icon_path])
+
+    # --- Load QML files ---
+    _data_object = load_qml(engine, "Data.qml", "Data", lambda obj: obj.loadSettings())
+    _theme_object = load_qml(engine, "Theme.qml", "Theme")
+    _svg_library_object = load_qml(engine, "SVGLibrary.qml", "SVGLibrary")
 
     # --- Controller ---
     controller = Controller()

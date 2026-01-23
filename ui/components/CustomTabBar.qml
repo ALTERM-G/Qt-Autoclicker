@@ -2,14 +2,14 @@ import QtQuick
 
 Rectangle {
     id: root
-    color: Data.backgroundColor
+    color: Theme.backgroundColor()
     implicitHeight: 30
     implicitWidth: 220
-    border.color: Data.borderColor
+    border.color: Theme.borderColor()
     border.width: 2
     radius: 5
 
-    property alias model: listView.model
+    property var tabData: []
     property alias currentIndex: listView.currentIndex
 
     ListView {
@@ -21,32 +21,33 @@ Rectangle {
         interactive: false
         orientation: Qt.Horizontal
         highlightFollowsCurrentItem: false
+        model: tabData.length
 
         delegate: Item {
             id: listDelegate
-            width: listView.width / listView.model.count
+            width: listView.width / tabData.length
             height: listView.height
 
             Row {
                 spacing: 5
                 anchors.centerIn: parent
 
-                Image {
+                SVGObject {
                     id: tabIcon
-                    source: listView.currentIndex === index ? model.hoverIcon : model.icon
-                    sourceSize: Qt.size(17, 17)
-                    fillMode: Image.PreserveAspectFit
-                    opacity: listView.currentIndex === index ? 1 : 0.6
+                    path: tabData[index].icon
+                    color: listView.currentIndex === index ? Theme.borderColor() : Theme.textColor()
+                    width: 17
+                    height: 17
 
-                    Behavior on opacity {
-                        NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+                    Behavior on color {
+                        ColorAnimation { duration: 150; easing.type: Easing.InOutQuad }
                     }
                 }
 
                 CustomText {
                     id: tabText
-                    text: model.name
-                    color: listView.currentIndex === index ? Data.borderColor : Data.textColor
+                    text: tabData[index].name
+                    color: listView.currentIndex === index ? Theme.borderColor() : Theme.textColor()
                     font.underline: false
                     pointSize: 11
                     font.bold: listView.currentIndex === index
@@ -70,13 +71,13 @@ Rectangle {
             x: listView.currentItem.x
 
             Behavior on x {
-                NumberAnimation { duration: 100; easing.type: Easing.InOutQuad }
+                NumberAnimation { duration: 150; easing.type: Easing.InOutQuad }
             }
 
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: 2
-                color: Data.themeColor
+                color: Theme.themeColor()
                 radius: 5
             }
         }

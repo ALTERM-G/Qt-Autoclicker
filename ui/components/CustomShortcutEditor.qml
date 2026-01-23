@@ -8,8 +8,8 @@ Rectangle {
     radius: 8
     focus: true
     border.width: 3
-    color: recording ? Data.themeColor : Data.backgroundColor
-    border.color: Data.borderColor
+    color: recording ? Theme.themeColor() : Theme.backgroundColor()
+    border.color: Theme.borderColor()
 
     // == Public API ==
     property bool allowLonelyLetters: true

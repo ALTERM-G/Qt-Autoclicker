@@ -29,14 +29,16 @@ Item {
             }
         }
 
-        Image {
-            source: mouseArea.containsMouse
-                ? "../../assets/icons/settings_hover.svg"
-                : "../../assets/icons/settings.svg"
+        SVGObject {
             anchors.centerIn: parent
-            sourceSize: Qt.size(40, 40)
-            fillMode: Image.PreserveAspectFit
-            smooth: true
+            path: SVGLibrary.settings
+            width: 40
+            height: 40
+            color: mouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
+
+            Behavior on color {
+                ColorAnimation { duration: 150 }
+            }
         }
     }
 
@@ -98,8 +100,9 @@ Item {
                 anchors.topMargin: 10
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                iconPath: "../../assets/icons/back.svg"
-                hoverIconPath: "../../assets/icons/back_hover.svg"
+                iconPath: SVGLibrary.back
+                width: 30
+                height: 30
                 onPressed: {settingsPopup.close()}
             }
 
@@ -152,9 +155,10 @@ Item {
                 }
 
                 CustomComboBox {
-                    model: ["Default","Light", "Dark"]
-                    Layout.fillWidth: true
                     Layout.topMargin: 2
+                    model: ["Catppuccin Mocha", "Dracula", "Everforest", "Monokai", "Gruvbox", "Vanilla Light", "Carbon Amber"]
+                    onCurrentTextChanged: Theme.setTheme(currentText)
+                    Layout.fillWidth: true
                 }
             }
         }

@@ -16,11 +16,11 @@ SpinBox {
     contentItem: TextInput {
         text: spinBox.value
         font.pixelSize: 18
-        font.family: Data.fontBold
-        color: Data.textColor
+        font.family: Theme.fontBold
+        color: Theme.textColor()
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        selectionColor: Data.themeColor
+        selectionColor: Theme.themeColor()
         selectByMouse: true
         selectedTextColor: "#000000"
         validator: IntValidator {
@@ -45,8 +45,8 @@ SpinBox {
     background: Rectangle {
         anchors.fill: parent
         radius: 6
-        color: Data.backgroundColor
-        border.color: Data.borderColor
+        color: Theme.backgroundColor()
+        border.color: Theme.borderColor()
         border.width: 3
     }
 
@@ -54,7 +54,7 @@ SpinBox {
         x: spinBox.width - width
         height: spinBox.height / 2
         width: 30
-        color: Data.backgroundColor
+        color: Theme.backgroundColor()
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: 3
@@ -63,7 +63,7 @@ SpinBox {
         Text {
             text: "▴"
             anchors.centerIn: parent
-            color: upMouseArea.containsMouse ? Data.themeColor : Data.textColor
+            color: upMouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
             font.pixelSize: 16
         }
 
@@ -79,7 +79,7 @@ SpinBox {
     down.indicator: Rectangle {
         width: 30
         height: spinBox.height / 2
-        color: Data.backgroundColor
+        color: Theme.backgroundColor()
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: 3
@@ -88,7 +88,7 @@ SpinBox {
         Text {
             text: "▾"
             anchors.centerIn: parent
-            color: downMouseArea.containsMouse ? Data.themeColor : Data.textColor
+            color: downMouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
             font.pixelSize: 14
         }
 

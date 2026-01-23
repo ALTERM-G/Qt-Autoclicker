@@ -5,14 +5,13 @@ Rectangle {
     width: 150
     height: 40
     radius: 6
-    border.color: Data.borderColor
+    border.color: Theme.borderColor()
     border.width: 3
-    color: mouseArea.containsMouse ? Data.hoverBackgroundColor : Data.backgroundColor
+    color: mouseArea.containsMouse ? Theme.hoverBackgroundColor() : Theme.backgroundColor()
     signal pressed
     property string buttonText
     property bool run: false
-    property string iconSource: ""
-    property string hoverIconSource: ""
+    property string iconPath: ""
     Keys.onReturnPressed: doPress()
     Keys.onEnterPressed: doPress()
     function doPress() {
@@ -23,19 +22,21 @@ Rectangle {
         anchors.centerIn: parent
         spacing: 8
 
-        Image {
+        SVGObject {
             id: buttonIcon
-            source: mouseArea.containsMouse ? (hoverIconSource || iconSource) : iconSource
-            visible: iconSource !== ""
-            sourceSize: Qt.size(17, 17)
             anchors.verticalCenter: parent.verticalCenter
+            path: convertButton.iconPath
+            visible: convertButton.iconPath !== ""
+            width: 17
+            height: 17
+            color: mouseArea.containsMouse ? Theme.hoverTextColor() : Theme.textColor()
         }
 
         Text {
             text: convertButton.buttonText
             font.pixelSize: 18
-            font.family: Data.fontBold
-            color: mouseArea.containsMouse ? Data.hoverTextColor : Data.textColor
+            font.family: Theme.fontBold
+            color: mouseArea.containsMouse ? Theme.hoverTextColor() : Theme.textColor()
             anchors.verticalCenter: parent.verticalCenter
 
             Behavior on color {
