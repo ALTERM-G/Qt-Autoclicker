@@ -1,4 +1,8 @@
 from .shortcut_worker import ShortcutWorker
-from .wayland_shortcut_worker import WaylandShortcutWorker
+
+try:
+    from .wayland_shortcut_worker import WaylandShortcutWorker
+except ImportError:
+    WaylandShortcutWorker = None
 
 __all__ = ["ShortcutWorker", "WaylandShortcutWorker"]

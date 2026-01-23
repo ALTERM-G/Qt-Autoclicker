@@ -6,7 +6,10 @@ from pathlib import Path
 import json
 
 from backend.workers.mouse_clicking import PynputClickWorker, WaylandClickWorker
-from backend.workers.keyboard_clicking import PynputKeyboardWorker, WaylandKeyboardWorker
+from backend.workers.keyboard_clicking import (
+    PynputKeyboardWorker,
+    WaylandKeyboardWorker,
+)
 from backend.workers.shortcut_handling import ShortcutWorker, WaylandShortcutWorker
 from backend.utils import KeyMapper, is_wayland
 
@@ -28,6 +31,8 @@ class Controller(QObject):
         self._cps = 50
         self._settings_path = Path(__file__).parent.parent / "data" / "Settings.json"
         self._settings_last_modified = 0
+        self._theme_path = Path(__file__).parent.parent / "data" / "CurrentTheme.json"
+        self._theme_last_modified = 0
         self._setup_shortcuts()
 
     def _load_settings(self):
@@ -49,6 +54,20 @@ class Controller(QObject):
             }
         }
 
+    def _load_theme(self):
+        try:
+            if self._theme_path.exists():
+                current_mtime = self._theme_path.stat().st_mtime
+                if current_mtime > self._theme_last_modified:
+                    with open(self._theme_path) as f:
+                        theme_data = json.load(f)
+                        self._theme_last_modified = current_mtime
+                        return theme_data.get("currentTheme", "Dracula")
+        except Exception as e:
+            print(f"Error loading theme: {e}")
+
+        return "Dracula"
+
     def _setup_shortcuts(self):
         settings = self._load_settings()
         run_key = settings["shortcuts"]["run"]["key"]
@@ -56,7 +75,7 @@ class Controller(QObject):
         stop_qt_key = settings["shortcuts"]["stop"]["key"]
         stop_modifiers = settings["shortcuts"]["stop"]["modifiers"]
 
-        if not is_wayland():
+        if not is_wayland() or WaylandShortcutWorker is None:
             start_key = KeyMapper.qt_to_pynput(run_key, run_modifiers)
             stop_key = KeyMapper.qt_to_pynput(stop_qt_key, stop_modifiers)
 
@@ -121,6 +140,20 @@ class Controller(QObject):
             print(f"Error saving settings: {e}")
 
     @Slot(str)
+    def save_theme(self, theme_name):
+        try:
+            theme_data = {"currentTheme": theme_name}
+            with open(self._theme_path, "w") as f:
+                json.dump(theme_data, f, indent=2)
+            print(f"Theme saved to {self._theme_path}: {theme_name}")
+        except Exception as e:
+            print(f"Error saving theme: {e}")
+
+    @Slot(result=str)
+    def get_current_theme(self):
+        return self._load_theme()
+
+    @Slot(str)
     def set_button(self, button):
         self._button = button
 
@@ -153,7 +186,7 @@ class Controller(QObject):
 
         # ---------------- Mouse Worker ----------------
         if button in ("left", "right"):
-            if is_wayland():
+            if is_wayland() and WaylandClickWorker is not None:
                 self._mouse_worker = WaylandClickWorker(
                     button=button, interval=interval, x=center_x, y=center_y
                 )
@@ -181,26 +214,21 @@ class Controller(QObject):
             else:
                 self._keyboard_text = keyboard_text
 
-            if is_wayland():
+            if is_wayland() and WaylandKeyboardWorker is not None:
                 self._keyboard_worker = WaylandKeyboardWorker(
                     char=self._keyboard_text, interval=interval
                 )
-                self._keyboard_thread = QThread()
-                self._keyboard_worker.moveToThread(self._keyboard_thread)
-                self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
-                self._keyboard_worker.finished.connect(self._cleanup_keyboard)
-                self._keyboard_worker.status.connect(self.status_update)
-                self._keyboard_thread.start()
             else:
                 self._keyboard_worker = PynputKeyboardWorker(
                     char=self._keyboard_text, interval=interval
                 )
-                self._keyboard_thread = QThread()
-                self._keyboard_worker.moveToThread(self._keyboard_thread)
-                self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
-                self._keyboard_worker.finished.connect(self._cleanup_keyboard)
-                self._keyboard_worker.status.connect(self.status_update)
-                self._keyboard_thread.start()
+
+            self._keyboard_thread = QThread()
+            self._keyboard_worker.moveToThread(self._keyboard_thread)
+            self._keyboard_thread.started.connect(self._keyboard_worker.start_typing)
+            self._keyboard_worker.finished.connect(self._cleanup_keyboard)
+            self._keyboard_worker.status.connect(self.status_update)
+            self._keyboard_thread.start()
 
     @Slot()
     def stop_clicking(self):

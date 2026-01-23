@@ -63,7 +63,7 @@ Rectangle {
     CustomText {
         anchors.centerIn: parent
         text: recording ? "Press keys..." : root.shortcutText
-        color: "white"
+        color: Theme.textColor()
         font.underline: false
     }
 

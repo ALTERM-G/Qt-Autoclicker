@@ -1,4 +1,8 @@
 from .pynput_keyboard import PynputKeyboardWorker
-from .wayland_keyboard import WaylandKeyboardWorker
+
+try:
+    from .wayland_keyboard import WaylandKeyboardWorker
+except ImportError:
+    WaylandKeyboardWorker = None
 
 __all__ = ["PynputKeyboardWorker", "WaylandKeyboardWorker"]

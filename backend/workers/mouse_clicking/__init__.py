@@ -1,4 +1,8 @@
 from .pynput_mouse import PynputClickWorker
-from .wayland_mouse import WaylandClickWorker
+
+try:
+    from .wayland_mouse import WaylandClickWorker
+except ImportError:
+    WaylandClickWorker = None
 
 __all__ = ["PynputClickWorker", "WaylandClickWorker"]

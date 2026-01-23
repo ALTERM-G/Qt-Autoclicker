@@ -18,6 +18,17 @@ ApplicationWindow {
         Data.loadSettings()
     }
 
+    Connections {
+        target: controller
+        function onStatus_update(status) {
+            if (status && (status.includes("started") || status.includes("started"))) {
+                overlay.visible = true
+            } else if (status && (status.includes("finished") || status.includes("finished"))) {
+                overlay.visible = false
+            }
+        }
+    }
+
     Shortcut {
         sequence: "Ctrl+Tab"
         onActivated: {
@@ -275,6 +286,31 @@ ApplicationWindow {
                 iconPath: SVGLibrary.stop
                 onPressed: {
                     controller.stop_clicking()
+                }
+            }
+        }
+
+        Rectangle {
+            id: overlay
+            anchors.fill: parent
+            color: "transparent"
+            visible: false
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.AllButtons
+
+                onPressed: function(mouse) {
+                    var inStopButtonArea = mouse.x >= stop_button.x &&
+                                          mouse.x <= stop_button.x + stop_button.width &&
+                                          mouse.y >= stop_button.y &&
+                                          mouse.y <= stop_button.y + stop_button.height
+
+                    if (inStopButtonArea) {
+                        mouse.accepted = false
+                    } else {
+                        mouse.accepted = true
+                    }
                 }
             }
         }

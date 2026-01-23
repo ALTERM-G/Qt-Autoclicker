@@ -11,22 +11,27 @@ _qml_objects = []
 _data_object = None
 _controller = None
 
+
 def cleanup():
     global _controller
     if _controller:
         _controller.stop_clicking()
         _controller.cleanup_shortcuts()
 
+
 def main():
     global _controller
     import os
+
     os.environ["QML_XHR_ALLOW_FILE_WRITE"] = "1"
     os.environ["QML_XHR_ALLOW_FILE_READ"] = "1"
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
     def load_qml(engine, filename, context_name, callback=None):
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", filename)
+        path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "data", filename
+        )
         if os.path.exists(path):
             component = QQmlComponent(engine, QUrl.fromLocalFile(path))
             obj = component.create()
@@ -52,16 +57,18 @@ def main():
     icon_path = os.path.join(base_path, "assets", "icons")
     QIcon.setThemeSearchPaths([icon_path])
 
-    # --- Load QML files ---
-    _data_object = load_qml(engine, "Data.qml", "Data", lambda obj: obj.loadSettings())
-    _theme_object = load_qml(engine, "Theme.qml", "Theme")
-    _svg_library_object = load_qml(engine, "SVGLibrary.qml", "SVGLibrary")
-
     # --- Controller ---
     controller = Controller()
     _controller = controller
     _qml_objects.append(controller)
     engine.rootContext().setContextProperty("controller", controller)
+
+    # --- Load QML files ---
+    _data_object = load_qml(engine, "Data.qml", "Data", lambda obj: obj.loadSettings())
+    _theme_object = load_qml(
+        engine, "Theme.qml", "Theme", lambda obj: obj.initializeTheme()
+    )
+    _svg_library_object = load_qml(engine, "SVGLibrary.qml", "SVGLibrary")
 
     # --- Load main.qml ---
     main_qml = os.path.join(

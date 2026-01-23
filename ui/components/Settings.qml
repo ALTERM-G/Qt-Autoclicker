@@ -117,6 +117,44 @@ Item {
                 }
 
                 CustomText {
+                    text: "Themes"
+                    style_2: true
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 20
+                    Layout.topMargin: 15
+                }
+
+                CustomComboBox {
+                    id: themeComboBox
+                    Layout.topMargin: 2
+                    Layout.preferredHeight: 40
+                    model: ["Carbon Amber", "Catppuccin Mocha", "Dracula", "Everforest", "Monokai", "Gruvbox", "Vanilla Light", "Solarized Light"]
+                    onCurrentTextChanged: {
+                        if (initialized) {
+                            Theme.setTheme(currentText)
+                        }
+                    }
+                    Layout.fillWidth: true
+                    
+                    property bool initialized: false
+                    
+                    // Initialize when popup opens (theme should be loaded by then)
+                    Connections {
+                        target: settingsPopup
+                        function onOpened() {
+                            var currentThemeIndex = themeComboBox.model.indexOf(Theme.currentTheme)
+                            if (currentThemeIndex !== -1) {
+                                // Set initialized to false temporarily to prevent triggering setTheme
+                                themeComboBox.initialized = false
+                                themeComboBox.currentIndex = currentThemeIndex
+                                // Now enable theme changes
+                                themeComboBox.initialized = true
+                            }
+                        }
+                    }
+                }
+
+                CustomText {
                     text: "Run Shortcut"
                     style_2: true
                     Layout.fillWidth: true
@@ -144,21 +182,6 @@ Item {
                     Layout.topMargin: 2
                     shortcutType: "stop"
                     allowLonelyLetters: false
-                }
-
-                CustomText {
-                    text: "Themes"
-                    style_2: true
-                    Layout.fillWidth: true
-                    Layout.leftMargin: 20
-                    Layout.topMargin: 15
-                }
-
-                CustomComboBox {
-                    Layout.topMargin: 2
-                    model: ["Catppuccin Mocha", "Dracula", "Everforest", "Monokai", "Gruvbox", "Vanilla Light", "Carbon Amber"]
-                    onCurrentTextChanged: Theme.setTheme(currentText)
-                    Layout.fillWidth: true
                 }
             }
         }

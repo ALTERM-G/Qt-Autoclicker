@@ -6,27 +6,26 @@ ComboBox {
     width: 240
     height: 40
     hoverEnabled: true
+    property int optionHeight: 35
+    property int popupPadding: 6
 
     contentItem: Text {
-        id: contentText
         text: control.displayText !== "" ? control.displayText : "Select"
         anchors.fill: parent
         font.pixelSize: 18
         font.family: Theme.fontBold
-        color: mouseArea.containsMouse ? Theme.hoverTextColor() : Theme.textColor()
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+        color: mouseArea.containsMouse
+               ? Theme.hoverTextColor()
+               : Theme.textColor()
 
-        Behavior on color {
-            ColorAnimation {
-                duration: 150
-            }
-        }
+        Behavior on color { ColorAnimation { duration: 150 } }
     }
 
     indicator: Text {
         text: "▾"
-        color: contentText.color
+        color: contentItem.color
         font.pixelSize: 24
         anchors.right: parent.right
         anchors.rightMargin: 10
@@ -36,20 +35,17 @@ ComboBox {
     background: Rectangle {
         anchors.fill: parent
         radius: 6
-        color: mouseArea.containsMouse ? Theme.hoverBackgroundColor() : Theme.backgroundColor()
         border.color: Theme.borderColor()
         border.width: 3
-
-        Behavior on color {
-            ColorAnimation {
-                duration: 150
-            }
-        }
+        color: mouseArea.containsMouse
+               ? Theme.hoverBackgroundColor()
+               : Theme.backgroundColor()
+        Behavior on color { ColorAnimation { duration: 150 } }
 
         MouseArea {
             id: mouseArea
-            hoverEnabled: true
             anchors.fill: parent
+            hoverEnabled: true
             cursorShape: Qt.PointingHandCursor
             onClicked: control.open()
         }
@@ -57,7 +53,13 @@ ComboBox {
 
     popup: Popup {
         width: control.width
-        implicitHeight: control.count * 43
+        implicitHeight: control.count * control.optionHeight + control.popupPadding * 2
+
+        padding: 0
+        topPadding: 0
+        bottomPadding: 0
+        leftPadding: 0
+        rightPadding: 0
 
         background: Rectangle {
             radius: 6
@@ -68,39 +70,42 @@ ComboBox {
 
         Column {
             anchors.fill: parent
+            anchors.margins: control.popupPadding
             spacing: 0
 
             Repeater {
                 model: control.model
 
-                delegate: ItemDelegate {
-                    id: itemDelegate
-                    width: parent ? parent.width : 200
-                    height: 35
+                delegate: Rectangle {
+                    width: parent.width
+                    height: control.optionHeight
+                    radius: 6
+                    color: hovered
+                           ? Theme.hoverBackgroundColor()
+                           : "transparent"
 
-                    contentItem: Text {
-                        text: control.textRole ? model[control.textRole] : modelData
-                        font.pixelSize: 18
-                        font.family: Theme.fontBold
-                        color: itemDelegate.hovered ? Theme.hoverTextColor() : Theme.textColor()
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: itemDelegate.hovered ? Theme.themeColor() : "transparent"
-                        radius: 6
-                    }
+                    property bool hovered: false
 
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
+                        onEntered: parent.hovered = true
+                        onExited: parent.hovered = false
                         onClicked: {
                             control.currentIndex = index
                             control.popup.close()
                         }
+                    }
+
+                    Text {
+                        anchors.fill: parent
+                        text: control.textRole ? model[control.textRole] : modelData
+                        font.pixelSize: 18
+                        font.family: Theme.fontBold
+                        color: hovered ? Theme.hoverTextColor() : Theme.textColor()
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
                 }
             }

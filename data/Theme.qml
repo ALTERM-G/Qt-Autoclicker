@@ -6,8 +6,6 @@ QtObject {
     // --- Fonts ---
     readonly property string fontRegular: "JetBrainsMono NL"
     readonly property string fontBold: "JetBrainsMono"
-
-    // --- Current Theme ---
     property string currentTheme: "Carbon Amber"
 
     // --- Theme colors ---
@@ -19,7 +17,7 @@ QtObject {
         },
         "Dracula": {
             themeColor: "#BD93F9", appBackgroundColor: "#282A36", topBarColor: "#21222C",
-            backgroundColor: "#282A36", hoverBackgroundColor: "#6272A4", borderColor: "#44475A",
+            backgroundColor: "#282A36", hoverBackgroundColor: "#50FA7B", borderColor: "#44475A",
             textColor: "#F8F8F2", hoverTextColor: "#282A36", dividerColor: "#44475A"
         },
         "Everforest": {
@@ -46,6 +44,11 @@ QtObject {
             themeColor: "#E78C02", appBackgroundColor: "#101010", topBarColor: "#060606",
             backgroundColor: "#181818", hoverBackgroundColor: "#B4B4B4", borderColor: "#2B2B2B",
             textColor: "#B4B4B4", hoverTextColor: "#2A2A2A", dividerColor: "#333333"
+        },
+        "Solarized Light": {
+            themeColor: "#268BD2", appBackgroundColor: "#FDF6E3", topBarColor: "#EEE8D5",
+            backgroundColor: "#FFFFFF", hoverBackgroundColor: "#B58900", borderColor: "#D3D3D3",
+            textColor: "#073642", hoverTextColor: "#073642", dividerColor: "#D3D3D3"
         }
     }
 
@@ -60,12 +63,23 @@ QtObject {
     function hoverTextColor() { return themes[currentTheme].hoverTextColor }
     function dividerColor() { return themes[currentTheme].dividerColor }
 
-    // --- Method to change theme ---
     function setTheme(name) {
         if (themes[name]) {
             currentTheme = name
+            if (controller) {
+                controller.save_theme(name)
+            }
         } else {
             console.warn("Theme not found: " + name)
+        }
+    }
+
+    function initializeTheme() {
+        if (controller) {
+            var loadedTheme = controller.get_current_theme()
+            if (themes[loadedTheme]) {
+                currentTheme = loadedTheme
+            }
         }
     }
 }
