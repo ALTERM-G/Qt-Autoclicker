@@ -108,11 +108,34 @@ Rectangle {
         return ""
     }
 
-    // == Keyboard handling ==
+    function isShortcutTaken(key, modifiers) {
+        if (!Data.settings || !Data.settings.shortcuts) {
+            return false
+        }
 
+        for (var type in Data.settings.shortcuts) {
+            if (type === shortcutType) {
+                continue
+            }
+            var shortcut = Data.settings.shortcuts[type]
+            if (shortcut.key === key && shortcut.modifiers === modifiers) {
+                return true
+            }
+        }
+        return false
+    }
+
+    // == Keyboard handling ==
     Keys.onPressed: function(event) {
         if (!recording)
             return
+
+        if (event.key === Qt.Key_Escape) {
+            recording = false
+            event.accepted = true
+            return
+        }
+
         if (event.key === Qt.Key_Control ||
             event.key === Qt.Key_Shift ||
             event.key === Qt.Key_Alt ||
@@ -123,7 +146,7 @@ Rectangle {
 
         if (!allowLonelyLetters) {
             var isLetter = (event.key >= Qt.Key_A && event.key <= Qt.Key_Z)
-            if (isLetter && (event.modifiers === 0 || event.modifiers === Qt.ShiftModifier)) {
+            if (isLetter && (event.modifiers === 0)) {
                 console.log("Single letter shortcuts are not allowed here.")
                 return
             }
@@ -132,26 +155,43 @@ Rectangle {
         let keyName = keyToString(event.key)
         if (keyName === "") return
 
+        var currentKey = event.key
+        var currentModifiers = event.modifiers
+
         if (!allowModifiers) {
-            if (event.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)) {
+            if (currentModifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)) {
                 return;
             }
-            shortcutKey = event.key
-            shortcutModifiers = 0
-            shortcutText = keyName
-        } else {
-            let parts = []
-            if (event.modifiers & Qt.ControlModifier) parts.push("Ctrl")
-            if (event.modifiers & Qt.AltModifier) parts.push("Alt")
-            if (event.modifiers & Qt.ShiftModifier) parts.push("Shift")
-            if (event.modifiers & Qt.MetaModifier) parts.push("Meta")
-
-            parts.push(keyName)
-
-            shortcutKey = event.key
-            shortcutModifiers = event.modifiers
-            shortcutText = parts.join(" + ")
+            currentModifiers = 0;
         }
+
+        if (isShortcutTaken(currentKey, currentModifiers)) {
+            var originalText = shortcutText
+            shortcutText = "Already taken!"
+            var timer = Qt.createQmlObject("import QtQuick; Timer {}", root)
+            timer.interval = 1500
+            timer.repeat = false
+            timer.triggered.connect(function() {
+                shortcutText = originalText
+                timer.destroy()
+            })
+            timer.start()
+            recording = false
+            return
+        }
+
+        shortcutKey = currentKey
+        shortcutModifiers = currentModifiers
+
+        var parts = []
+        if (currentModifiers & Qt.ControlModifier) parts.push("Ctrl")
+        if (currentModifiers & Qt.AltModifier) parts.push("Alt")
+        if (currentModifiers & Qt.ShiftModifier) parts.push("Shift")
+        if (currentModifiers & Qt.MetaModifier) parts.push("Meta")
+
+        parts.push(keyName)
+        shortcutText = parts.join(" + ")
+
 
         if (manageSettings) {
             if (!Data.settings.shortcuts) Data.settings.shortcuts = {}

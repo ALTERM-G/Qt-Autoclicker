@@ -10,6 +10,10 @@ class ShortcutWorker(QObject):
         self._start_key = start_key
         self._stop_key = stop_key
         self._listener = None
+        self._enabled = True
+
+    def set_enabled(self, enabled):
+        self._enabled = enabled
 
     def start_listening(self):
         self._listener = keyboard.Listener(on_press=self._on_press)
@@ -20,6 +24,8 @@ class ShortcutWorker(QObject):
             self._listener.stop()
 
     def _on_press(self, key):
+        if not self._enabled:
+            return
         if key == self._start_key:
             self.start_signal.emit()
         elif key == self._stop_key:

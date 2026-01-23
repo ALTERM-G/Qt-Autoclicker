@@ -7,6 +7,9 @@ Item {
     width: 40
     height: 40
 
+    property bool isPopupOpen: settingsPopup.opened
+    onIsPopupOpenChanged: controller.set_shortcuts_enabled(!isPopupOpen)
+
 
     Rectangle {
         id: buttonRect
@@ -128,17 +131,16 @@ Item {
                     id: themeComboBox
                     Layout.topMargin: 2
                     Layout.preferredHeight: 40
-                    model: ["Carbon Amber", "Catppuccin Mocha", "Dracula", "Everforest", "Monokai", "Gruvbox", "Vanilla Light", "Solarized Light"]
+                    model: ["Carbon Amber", "Catppuccin Mocha", "Dracula", "Everforest", "Monokai","Github Dark", "Gruvbox", "Vanilla Light"]
                     onCurrentTextChanged: {
                         if (initialized) {
                             Theme.setTheme(currentText)
                         }
                     }
                     Layout.fillWidth: true
-                    
+
                     property bool initialized: false
-                    
-                    // Initialize when popup opens (theme should be loaded by then)
+
                     Connections {
                         target: settingsPopup
                         function onOpened() {

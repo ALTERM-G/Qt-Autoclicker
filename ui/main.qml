@@ -18,19 +18,9 @@ ApplicationWindow {
         Data.loadSettings()
     }
 
-    Connections {
-        target: controller
-        function onStatus_update(status) {
-            if (status && (status.includes("started") || status.includes("started"))) {
-                overlay.visible = true
-            } else if (status && (status.includes("finished") || status.includes("finished"))) {
-                overlay.visible = false
-            }
-        }
-    }
-
     Shortcut {
         sequence: "Ctrl+Tab"
+        enabled: !settings.isPopupOpen && !controller.is_running
         onActivated: {
             tabBar.currentIndex = (tabBar.currentIndex + 1) % Data.tabs.length
         }
@@ -80,6 +70,7 @@ ApplicationWindow {
             }
 
             Settings {
+                id: settings
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
@@ -251,41 +242,28 @@ ApplicationWindow {
             }
         }
 
-        Row {
+        CustomButton {
+            id: run_button
+            buttonText: "Run"
+            run: true
+            visible: !controller.is_running
+            iconPath: SVGLibrary.run
             anchors.top: appRect.bottom
             anchors.topMargin: 20
             anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 10
-
-            CustomButton {
-                id: run_button
-                buttonText: "Run"
-                run: true
-                iconPath: SVGLibrary.run
-                onPressed: {
-                    if (tabBar.currentIndex === 0) {
-                        controller.start_clicking(
-                            pressButton_comboBox.currentText,
-                            cpsSpin.value,
-                            null
-                        )
-                    } else if (tabBar.currentIndex === 1) {
-                        controller.start_clicking(
-                            null,
-                            keyboardCpsSpin.value,
-                            keyboardShortcutEditor.shortcutText
-                        )
-                    }
-                }
-            }
-
-            CustomButton {
-                id: stop_button
-                buttonText: "Stop"
-                run: false
-                iconPath: SVGLibrary.stop
-                onPressed: {
-                    controller.stop_clicking()
+            onPressed: {
+                if (tabBar.currentIndex === 0) {
+                    controller.start_clicking(
+                        pressButton_comboBox.currentText,
+                        cpsSpin.value,
+                        null
+                    )
+                } else if (tabBar.currentIndex === 1) {
+                    controller.start_clicking(
+                        null,
+                        keyboardCpsSpin.value,
+                        keyboardShortcutEditor.shortcutText
+                    )
                 }
             }
         }
@@ -293,25 +271,28 @@ ApplicationWindow {
         Rectangle {
             id: overlay
             anchors.fill: parent
-            color: "transparent"
-            visible: false
+            color: "#80000000"
+            visible: controller.is_running
 
             MouseArea {
                 anchors.fill: parent
                 acceptedButtons: Qt.AllButtons
+                hoverEnabled: true
+                onPressed: {}
+            }
+        }
 
-                onPressed: function(mouse) {
-                    var inStopButtonArea = mouse.x >= stop_button.x &&
-                                          mouse.x <= stop_button.x + stop_button.width &&
-                                          mouse.y >= stop_button.y &&
-                                          mouse.y <= stop_button.y + stop_button.height
-
-                    if (inStopButtonArea) {
-                        mouse.accepted = false
-                    } else {
-                        mouse.accepted = true
-                    }
-                }
+        CustomButton {
+            id: stop_button
+            buttonText: "Stop"
+            visible: controller.is_running
+            run: false
+            iconPath: SVGLibrary.stop
+            anchors.top: appRect.bottom
+            anchors.topMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            onPressed: {
+                controller.stop_clicking()
             }
         }
     }

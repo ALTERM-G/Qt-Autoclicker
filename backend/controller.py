@@ -1,4 +1,4 @@
-from PySide6.QtCore import QObject, QThread, Signal, Slot
+from PySide6.QtCore import QObject, QThread, Signal, Slot, Property
 from PySide6.QtGui import QGuiApplication
 from pynput import keyboard
 from evdev import ecodes
@@ -16,9 +16,11 @@ from backend.utils import KeyMapper, is_wayland
 
 class Controller(QObject):
     status_update = Signal(str)
+    runningChanged = Signal()
 
     def __init__(self):
         super().__init__()
+        self._is_running = False
         self._mouse_worker = None
         self._mouse_thread = None
         self._keyboard_worker = None
@@ -33,6 +35,7 @@ class Controller(QObject):
         self._settings_last_modified = 0
         self._theme_path = Path(__file__).parent.parent / "data" / "CurrentTheme.json"
         self._theme_last_modified = 0
+        self._shortcuts_enabled = True
         self._setup_shortcuts()
 
     def _load_settings(self):
@@ -97,6 +100,7 @@ class Controller(QObject):
         self._shortcut_thread.started.connect(self._shortcut_worker.start_listening)
         self._shortcut_worker.start_signal.connect(self.start_clicking_shortcut)
         self._shortcut_worker.stop_signal.connect(self.stop_clicking)
+        self._shortcut_worker.set_enabled(self._shortcuts_enabled)
         self._shortcut_thread.start()
 
     @Slot()
@@ -153,6 +157,23 @@ class Controller(QObject):
     def get_current_theme(self):
         return self._load_theme()
 
+    @Slot(bool)
+    def set_shortcuts_enabled(self, enabled):
+        self._shortcuts_enabled = enabled
+        if self._shortcut_worker:
+            if hasattr(self._shortcut_worker, "set_enabled"):
+                self._shortcut_worker.set_enabled(enabled)
+
+    @Property(bool, notify=runningChanged)
+    def is_running(self):
+        return self._is_running
+
+    def _update_running_state(self):
+        is_running = self._mouse_worker is not None or self._keyboard_worker is not None
+        if self._is_running != is_running:
+            self._is_running = is_running
+            self.runningChanged.emit()
+
     @Slot(str)
     def set_button(self, button):
         self._button = button
@@ -178,6 +199,9 @@ class Controller(QObject):
 
     @Slot(str, int, str)
     def start_clicking(self, button, cps, keyboard_text=None):
+        if self._is_running:
+            return
+
         interval = 1.0 / cps
         screen = QGuiApplication.primaryScreen()
         geometry = screen.geometry()
@@ -230,6 +254,8 @@ class Controller(QObject):
             self._keyboard_worker.status.connect(self.status_update)
             self._keyboard_thread.start()
 
+        self._update_running_state()
+
     @Slot()
     def stop_clicking(self):
         if self._mouse_worker:
@@ -241,23 +267,27 @@ class Controller(QObject):
         if self._mouse_thread:
             self._mouse_thread.quit()
             self._mouse_thread.wait()
-            if self._mouse_worker:
-                self._mouse_worker.deleteLater()
-                if self._mouse_thread:
-                    self._mouse_thread.deleteLater()
-                    self._mouse_worker = None
-                    self._mouse_thread = None
+        if self._mouse_worker:
+            self._mouse_worker.deleteLater()
+        if self._mouse_thread:
+            self._mouse_thread.deleteLater()
+
+        self._mouse_worker = None
+        self._mouse_thread = None
+        self._update_running_state()
 
     def _cleanup_keyboard(self):
         if self._keyboard_thread:
             self._keyboard_thread.quit()
             self._keyboard_thread.wait()
-            if self._keyboard_worker:
-                self._keyboard_worker.deleteLater()
-                if self._keyboard_thread:
-                    self._keyboard_thread.deleteLater()
-                    self._keyboard_worker = None
-                    self._keyboard_thread = None
+        if self._keyboard_worker:
+            self._keyboard_worker.deleteLater()
+        if self._keyboard_thread:
+            self._keyboard_thread.deleteLater()
+
+        self._keyboard_worker = None
+        self._keyboard_thread = None
+        self._update_running_state()
 
     def cleanup_shortcuts(self):
         try:

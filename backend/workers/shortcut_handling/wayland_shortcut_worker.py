@@ -13,6 +13,10 @@ class WaylandShortcutWorker(QObject):
         self._stop_key = stop_key
         self._running = False
         self._devices = {}
+        self._enabled = True
+
+    def set_enabled(self, enabled):
+        self._enabled = enabled
 
     def start_listening(self):
         self._running = True
@@ -28,6 +32,8 @@ class WaylandShortcutWorker(QObject):
                     continue
                 dev = self._devices[fd]
                 for event in dev.read():
+                    if not self._enabled:
+                        continue
                     if event.type != ecodes.EV_KEY:
                         continue
 

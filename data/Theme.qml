@@ -45,14 +45,19 @@ QtObject {
             backgroundColor: "#181818", hoverBackgroundColor: "#B4B4B4", borderColor: "#2B2B2B",
             textColor: "#B4B4B4", hoverTextColor: "#2A2A2A", dividerColor: "#333333"
         },
-        "Solarized Light": {
-            themeColor: "#268BD2", appBackgroundColor: "#FDF6E3", topBarColor: "#EEE8D5",
-            backgroundColor: "#FFFFFF", hoverBackgroundColor: "#B58900", borderColor: "#D3D3D3",
-            textColor: "#073642", hoverTextColor: "#073642", dividerColor: "#D3D3D3"
+        "Github Dark": {
+            themeColor: "#2F81F7",
+            appBackgroundColor: "#0D1117",
+            topBarColor: "#161B22",
+            backgroundColor: "#0D1117",
+            hoverBackgroundColor: "#3FB950",
+            borderColor: "#30363D",
+            textColor: "#C9D1D9",
+            hoverTextColor: "#0D1117",
+            dividerColor: "#30363D"
         }
     }
 
-    // --- Accessor functions for current theme ---
     function themeColor() { return themes[currentTheme].themeColor }
     function appBackgroundColor() { return themes[currentTheme].appBackgroundColor }
     function topBarColor() { return themes[currentTheme].topBarColor }

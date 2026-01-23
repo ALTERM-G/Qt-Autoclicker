@@ -5,8 +5,8 @@
       "modifiers": 0
     },
     "stop": {
-      "key": 16777216,
-      "modifiers": 0
+      "key": 83,
+      "modifiers": 33554432
     },
     "keyboard": {
       "key": 83,
