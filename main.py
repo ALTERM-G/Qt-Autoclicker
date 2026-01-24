@@ -11,13 +11,11 @@ _qml_objects = []
 _data_object = None
 _controller = None
 
-
 def cleanup():
     global _controller
     if _controller:
         _controller.stop_clicking()
         _controller.cleanup_shortcuts()
-
 
 def main():
     global _controller
@@ -64,11 +62,19 @@ def main():
     engine.rootContext().setContextProperty("controller", controller)
 
     # --- Load QML files ---
-    _data_object = load_qml(engine, "Data.qml", "Data", lambda obj: obj.loadSettings())
-    _theme_object = load_qml(
-        engine, "Theme.qml", "Theme", lambda obj: obj.initializeTheme()
-    )
-    _svg_library_object = load_qml(engine, "SVGLibrary.qml", "SVGLibrary")
+    qml_singletons = [
+        ("Metrics", "ui/Metrics.qml", None),
+        ("SVGLibrary", "ui/SVGLibrary.qml", None),
+        ("Typography", "ui/Typography.qml", None),
+        ("Theme", "ui/Theme.qml", lambda obj: obj.initializeTheme()),
+        ("SettingsManager", "config/SettingsManager.qml", lambda obj: obj.loadSettings())
+    ]
+
+    qml_objects = {}
+
+    for name, path, callback in qml_singletons:
+        qml_objects[name] = load_qml(engine, path, name, callback)
+
 
     # --- Load main.qml ---
     main_qml = os.path.join(

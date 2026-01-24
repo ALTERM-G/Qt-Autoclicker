@@ -6,8 +6,8 @@ import "components"
 ApplicationWindow {
     id: window
     visible: true
-    width: 450
-    height: 600
+    width: Metrics.windowWidth
+    height: Metrics.windowHeight
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
@@ -15,14 +15,14 @@ ApplicationWindow {
     title: "Autoclick and shortcut_manager"
 
     Component.onCompleted: {
-        Data.loadSettings()
+        SettingsManager.loadSettings()
     }
 
     Shortcut {
         sequence: "Ctrl+Tab"
         enabled: !settings.isPopupOpen && !controller.is_running
         onActivated: {
-            tabBar.currentIndex = (tabBar.currentIndex + 1) % Data.tabs.length
+            tabBar.currentIndex = (tabBar.currentIndex + 1) % SettingsManager.tabs.length
         }
     }
 
@@ -33,7 +33,7 @@ ApplicationWindow {
 
         Rectangle {
             id: topBar
-            height: 75
+            height: Metrics.topBarHeight
             color: Theme.topBarColor()
             anchors.top: parent.top
             anchors.left: parent.left
@@ -41,7 +41,7 @@ ApplicationWindow {
 
             Rectangle {
                 id: divider
-                height: 2
+                height: Metrics.dividerThickness
                 color: Theme.dividerColor()
                 width: parent.width
                 anchors.bottom: parent.bottom
@@ -52,7 +52,7 @@ ApplicationWindow {
                 color: Theme.themeColor()
                 anchors.left: topBar.left
                 anchors.verticalCenter: topBar.verticalCenter
-                anchors.leftMargin: 10
+                anchors.leftMargin: Metrics.marginM
                 height: topBar.height
                 text:
                     " █████╗ ██╗   ██╗████████╗ ██████╗        ██████╗██╗     ██╗ ██████╗██╗  ██╗\n" +
@@ -63,7 +63,7 @@ ApplicationWindow {
                     "╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝        ╚═════╝╚══════╝╚═╝ ╚═════╝╚═╝  ╚═╝"
 
                 font.pointSize: 4
-                font.family: Theme.fontRegular
+                font.family: Typography.fontRegular
                 wrapMode: Text.NoWrap
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
@@ -72,7 +72,7 @@ ApplicationWindow {
             Settings {
                 id: settings
                 anchors.right: parent.right
-                anchors.rightMargin: 20
+                anchors.rightMargin: Metrics.marginXL
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -80,19 +80,19 @@ ApplicationWindow {
         AppRect {
             id: appRect
             anchors.centerIn: parent
-            anchors.topMargin: 100
-            width: 400
-            height: 420
+            anchors.topMargin: Metrics.spacingXXL
+            width: Metrics.appRectWidth
+            height: Metrics.appRectHeight
 
             Column {
                 id: mouseView
                 anchors.fill: parent
-                anchors.topMargin: 60
-                spacing: 12
+                anchors.topMargin: Metrics.spacingXL
+                spacing: Metrics.spacingM
                 visible: tabBar.currentIndex === 0
 
                 Column {
-                    spacing: 3
+                    spacing: Metrics.spacingXS
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     CustomText {
@@ -114,16 +114,16 @@ ApplicationWindow {
                 }
 
                 Column {
-                    spacing: 3
+                    spacing: Metrics.spacingXS
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     Row {
-                        spacing: 3
+                        spacing: Metrics.spacingXS
 
                         SVGObject {
                             path: SVGLibrary.chrono
-                            width: 17
-                            height: 17
+                            width: Metrics.iconSizeS
+                            height: Metrics.iconSizeS
                             color: Theme.borderColor()
                         }
 
@@ -152,13 +152,13 @@ ApplicationWindow {
             Column {
                 id: keyboardView
                 anchors.fill: parent
-                anchors.topMargin: 60
-                spacing: 12
+                anchors.topMargin: Metrics.spacingXL
+                spacing: Metrics.spacingM
                 visible: tabBar.currentIndex === 1
                 property var keyboardShortcut: ({ "key": Qt.Key_A, "modifiers": 0, "text": "A" })
 
                 Column {
-                    spacing: 3
+                    spacing: Metrics.spacingXS
                     anchors.horizontalCenter: parent.horizontalCenter
 
                     CustomText {
@@ -189,15 +189,15 @@ ApplicationWindow {
                 }
 
                 Column {
-                    spacing: 3
+                    spacing: Metrics.spacingXS
                     anchors.horizontalCenter: parent.horizontalCenter
                     Row {
-                        spacing: 3
+                        spacing: Metrics.spacingXS
 
                         SVGObject {
                             path: SVGLibrary.chrono
-                            width: 17
-                            height: 17
+                            width: Metrics.iconSizeS
+                            height: Metrics.iconSizeS
                             color: Theme.borderColor()
                         }
 
@@ -230,7 +230,7 @@ ApplicationWindow {
             anchors.topMargin: 10
             anchors.left: appRect.left
             anchors.leftMargin: 10
-            tabData: Data.tabs
+            tabData: SettingsManager.tabs
 
             Component.onCompleted: controller.set_current_view("mouse")
             onCurrentIndexChanged: {

@@ -6,8 +6,8 @@ Item {
     property string path: ""
     property color color: "black"
 
-    width: 24
-    height: 24
+    width: Metrics.iconSizeM
+    height: Metrics.iconSizeM
 
     Image {
         id: sourceImage

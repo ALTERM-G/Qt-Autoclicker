@@ -3,8 +3,8 @@ import QtQuick.Controls
 
 ComboBox {
     id: control
-    width: 240
-    height: 40
+    width: Metrics.comboBoxWidth
+    height: Metrics.controlHeight
     hoverEnabled: true
     property int optionHeight: 35
     property int popupPadding: 6
@@ -13,7 +13,7 @@ ComboBox {
         text: control.displayText !== "" ? control.displayText : "Select"
         anchors.fill: parent
         font.pixelSize: 18
-        font.family: Theme.fontBold
+        font.family: Typography.fontBold
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         color: mouseArea.containsMouse
@@ -28,7 +28,7 @@ ComboBox {
         color: contentItem.color
         font.pixelSize: 24
         anchors.right: parent.right
-        anchors.rightMargin: 10
+        anchors.rightMargin: Metrics.marginM
         anchors.verticalCenter: parent.verticalCenter
     }
 
@@ -36,7 +36,7 @@ ComboBox {
         anchors.fill: parent
         radius: 6
         border.color: Theme.borderColor()
-        border.width: 3
+        border.width: Metrics.borderThick
         color: mouseArea.containsMouse
                ? Theme.hoverBackgroundColor()
                : Theme.backgroundColor()
@@ -65,7 +65,7 @@ ComboBox {
             radius: 6
             color: Theme.backgroundColor()
             border.color: Theme.borderColor()
-            border.width: 3
+            border.width: Metrics.borderThick
         }
 
         Column {
@@ -102,7 +102,7 @@ ComboBox {
                         anchors.fill: parent
                         text: control.textRole ? model[control.textRole] : modelData
                         font.pixelSize: 18
-                        font.family: Theme.fontBold
+        font.family: Typography.fontBold
                         color: hovered ? Theme.hoverTextColor() : Theme.textColor()
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter

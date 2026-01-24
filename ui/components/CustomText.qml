@@ -7,7 +7,7 @@ Text {
     property int pointSize: 14
 
     font.pointSize: style_2 ? 11 : pointSize
-    font.family: Theme.fontBold
+    font.family: Typography.fontBold
     font.underline: style_2 ? false : true
     color: style_2 ? Theme.borderColor() : Theme.themeColor()
 }

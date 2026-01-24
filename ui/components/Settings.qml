@@ -4,17 +4,15 @@ import QtQuick.Layouts
 
 Item {
     id: settingsMenu
-    width: 40
-    height: 40
-
+    width: Metrics.iconButtonSize
+    height: Metrics.iconButtonSize
     property bool isPopupOpen: settingsPopup.opened
     onIsPopupOpenChanged: controller.set_shortcuts_enabled(!isPopupOpen)
 
-
     Rectangle {
         id: buttonRect
-        width: 40
-        height: 40
+        width: Metrics.iconButtonSize
+        height: Metrics.iconButtonSize
         color: "transparent"
         scale: mouseArea.containsMouse ? 1.1 : 1.0
 
@@ -35,8 +33,8 @@ Item {
         SVGObject {
             anchors.centerIn: parent
             path: SVGLibrary.settings
-            width: 40
-            height: 40
+            width: Metrics.iconButtonSize
+            height: Metrics.iconButtonSize
             color: mouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
 
             Behavior on color {
@@ -47,8 +45,8 @@ Item {
 
     Popup {
         id: settingsPopup
-        width: 400
-        height: 420
+        width: Metrics.appRectWidth
+        height: Metrics.appRectHeight
         parent: Overlay.overlay
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
@@ -100,18 +98,18 @@ Item {
 
             IconButton {
                 anchors.top: parent.top
-                anchors.topMargin: 10
+                anchors.topMargin: Metrics.spacingS
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+                anchors.leftMargin: Metrics.spacingS
                 iconPath: SVGLibrary.back
-                width: 30
-                height: 30
+                width: Metrics.iconSizeL
+                height: Metrics.iconSizeL
                 onPressed: {settingsPopup.close()}
             }
 
             ColumnLayout {
                 anchors.top: parent.top
-                anchors.topMargin: 20
+                anchors.topMargin: Metrics.spacingL
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 CustomText {
@@ -123,13 +121,13 @@ Item {
                     text: "Themes"
                     style_2: true
                     Layout.fillWidth: true
-                    Layout.leftMargin: 20
-                    Layout.topMargin: 15
+                    Layout.leftMargin: Metrics.marginXL
+                    Layout.topMargin: Metrics.marginL
                 }
 
                 CustomComboBox {
                     id: themeComboBox
-                    Layout.topMargin: 2
+                    Layout.topMargin: Metrics.marginXS
                     Layout.preferredHeight: 40
                     model: ["Carbon Amber", "Catppuccin Mocha", "Dracula", "Everforest", "Monokai","Github Dark", "Gruvbox", "Vanilla Light"]
                     onCurrentTextChanged: {
@@ -146,10 +144,8 @@ Item {
                         function onOpened() {
                             var currentThemeIndex = themeComboBox.model.indexOf(Theme.currentTheme)
                             if (currentThemeIndex !== -1) {
-                                // Set initialized to false temporarily to prevent triggering setTheme
                                 themeComboBox.initialized = false
                                 themeComboBox.currentIndex = currentThemeIndex
-                                // Now enable theme changes
                                 themeComboBox.initialized = true
                             }
                         }
@@ -160,13 +156,13 @@ Item {
                     text: "Run Shortcut"
                     style_2: true
                     Layout.fillWidth: true
-                    Layout.leftMargin: 20
-                    Layout.topMargin: 15
+                    Layout.leftMargin: Metrics.marginXL
+                    Layout.topMargin: Metrics.marginL
                 }
 
                 CustomShortcutEditor {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 2
+                    Layout.topMargin: Metrics.marginXS
                     shortcutType: "run"
                     allowLonelyLetters: false
                 }
@@ -175,13 +171,13 @@ Item {
                     text: "Stop shortcut"
                     style_2: true
                     Layout.fillWidth: true
-                    Layout.leftMargin: 20
-                    Layout.topMargin: 15
+                    Layout.leftMargin: Metrics.marginXL
+                    Layout.topMargin: Metrics.marginL
                 }
 
                 CustomShortcutEditor {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: 2
+                    Layout.topMargin: Metrics.marginXS
                     shortcutType: "stop"
                     allowLonelyLetters: false
                 }

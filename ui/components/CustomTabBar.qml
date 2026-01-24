@@ -6,17 +6,16 @@ Rectangle {
     implicitHeight: 30
     implicitWidth: 220
     border.color: Theme.borderColor()
-    border.width: 2
+    border.width: Metrics.borderNormal
     radius: 5
-
     property var tabData: []
     property alias currentIndex: listView.currentIndex
 
     ListView {
         id: listView
         anchors.fill: parent
-        spacing: 1
-        anchors.margins: 1
+        spacing: 0
+        anchors.margins: Metrics.spacingXS
         currentIndex: 0
         interactive: false
         orientation: Qt.Horizontal
@@ -29,15 +28,15 @@ Rectangle {
             height: listView.height
 
             Row {
-                spacing: 5
+                spacing: Metrics.spacingS
                 anchors.centerIn: parent
 
                 SVGObject {
                     id: tabIcon
                     path: tabData[index].icon
                     color: listView.currentIndex === index ? Theme.borderColor() : Theme.textColor()
-                    width: 17
-                    height: 17
+                    width: Metrics.iconSizeS
+                    height: Metrics.iconSizeS
 
                     Behavior on color {
                         ColorAnimation { duration: 150; easing.type: Easing.InOutQuad }
@@ -76,7 +75,7 @@ Rectangle {
 
             Rectangle {
                 anchors.fill: parent
-                anchors.margins: 2
+                anchors.margins: 0
                 color: Theme.themeColor()
                 radius: 5
             }

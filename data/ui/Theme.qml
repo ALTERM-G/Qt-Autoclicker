@@ -3,9 +3,6 @@ import QtQuick
 import QtQuick.Controls
 
 QtObject {
-    // --- Fonts ---
-    readonly property string fontRegular: "JetBrainsMono NL"
-    readonly property string fontBold: "JetBrainsMono"
     property string currentTheme: "Carbon Amber"
 
     // --- Theme colors ---

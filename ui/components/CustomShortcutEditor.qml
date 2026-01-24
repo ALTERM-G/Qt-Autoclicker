@@ -3,11 +3,11 @@ import QtQuick.Controls
 
 Rectangle {
     id: root
-    width: 240
-    height: 40
+    width: Metrics.comboBoxWidth
+    height: Metrics.controlHeight
     radius: 8
     focus: true
-    border.width: 3
+    border.width: Metrics.borderThick
     color: recording ? Theme.themeColor() : Theme.backgroundColor()
     border.color: Theme.borderColor()
 
@@ -33,7 +33,7 @@ Rectangle {
     }
 
     Connections {
-        target: Data
+        target: SettingsManager
         function onSettingsLoaded() {
             if (manageSettings) {
                 updateFromSettings()
@@ -42,8 +42,8 @@ Rectangle {
     }
 
     function updateFromSettings() {
-        if (Data.settings && Data.settings.shortcuts && Data.settings.shortcuts[shortcutType]) {
-            var settingsShortcut = Data.settings.shortcuts[shortcutType]
+        if (SettingsManager.settings && SettingsManager.settings.shortcuts && SettingsManager.settings.shortcuts[shortcutType]) {
+            var settingsShortcut = SettingsManager.settings.shortcuts[shortcutType]
             shortcutKey = settingsShortcut.key
             shortcutModifiers = settingsShortcut.modifiers
 
@@ -109,15 +109,15 @@ Rectangle {
     }
 
     function isShortcutTaken(key, modifiers) {
-        if (!Data.settings || !Data.settings.shortcuts) {
+        if (!SettingsManager.settings || !SettingsManager.settings.shortcuts) {
             return false
         }
 
-        for (var type in Data.settings.shortcuts) {
+        for (var type in SettingsManager.settings.shortcuts) {
             if (type === shortcutType) {
                 continue
             }
-            var shortcut = Data.settings.shortcuts[type]
+            var shortcut = SettingsManager.settings.shortcuts[type]
             if (shortcut.key === key && shortcut.modifiers === modifiers) {
                 return true
             }
@@ -194,12 +194,12 @@ Rectangle {
 
 
         if (manageSettings) {
-            if (!Data.settings.shortcuts) Data.settings.shortcuts = {}
-                Data.settings.shortcuts[shortcutType] = {
+            if (!SettingsManager.settings.shortcuts) SettingsManager.settings.shortcuts = {}
+                SettingsManager.settings.shortcuts[shortcutType] = {
                 "key": shortcutKey,
                 "modifiers": shortcutModifiers
             }
-            controller.save_settings_from_qml(JSON.stringify(Data.settings))
+            controller.save_settings_from_qml(JSON.stringify(SettingsManager.settings))
         }
 
         shortcutChanged(shortcutKey, shortcutModifiers, shortcutText)

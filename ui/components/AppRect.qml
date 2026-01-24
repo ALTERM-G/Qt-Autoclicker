@@ -5,5 +5,5 @@ Rectangle {
     radius: 6
     color: Theme.backgroundColor()
     border.color: Theme.dividerColor()
-    border.width: 2
+    border.width: Metrics.borderNormal
 }

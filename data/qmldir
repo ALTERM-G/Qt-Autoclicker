@@ -1,4 +1,6 @@
-module Data
-singleton Data 1.0 Data.qml
-singleton Theme 1.0 Theme.qml
-singleton SVGLibrary 1.0 SVGLibrary.qml
+singleton AppConfig 1.0 ui/AppConfig.qml
+singleton Metrics 1.0 ui/Metrics.qml
+singleton Typography 1.0 ui/Typography.qml
+singleton Theme 1.0 ui/Theme.qml
+singleton SVGLibrary 1.0 ui/SVGLibrary.qml
+singleton SettingsManager 1.0 config/SettingsManager.qml

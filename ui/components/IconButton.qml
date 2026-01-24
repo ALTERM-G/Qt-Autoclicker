@@ -4,8 +4,8 @@ import QtQuick.Controls
 Rectangle {
     id: iconButton
     property string iconPath: ""
-    width: 20
-    height: 20
+    width: Metrics.iconButtonInnerSize
+    height: Metrics.iconButtonInnerSize
     color: "transparent"
     signal pressed
     Keys.onReturnPressed: doPress()
@@ -24,8 +24,8 @@ Rectangle {
         id: iconSvg
         anchors.centerIn: parent
         path: iconPath
-        width: 20
-        height: 20
+        width: Metrics.iconButtonInnerSize
+        height: Metrics.iconButtonInnerSize
         color: mouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
 
         Behavior on color {
