@@ -4,7 +4,7 @@ Rectangle {
     id: convertButton
     width: Metrics.buttonWidth
     height: Metrics.controlHeight
-    radius: 6
+    radius: Metrics.radiusM
     border.color: Theme.borderColor()
     border.width: Metrics.borderThick
     color: mouseArea.containsMouse ? Theme.hoverBackgroundColor() : Theme.backgroundColor()

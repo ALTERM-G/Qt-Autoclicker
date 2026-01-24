@@ -45,8 +45,8 @@ Item {
 
     Popup {
         id: settingsPopup
-        width: Metrics.appRectWidth
-        height: Metrics.appRectHeight
+        width: AppConfig.appRectWidth
+        height: AppConfig.appRectHeight
         parent: Overlay.overlay
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
@@ -80,14 +80,14 @@ Item {
                     property: "opacity"
                     from: 1
                     to: 0
-                    duration: 160
+                    duration: 200
                     easing.type: Easing.InOutQuad
                 }
                 NumberAnimation {
                     property: "scale"
                     from: 1
                     to: 0.85
-                    duration: 160
+                    duration: 200
                     easing.type: Easing.InQuad
                 }
             }
@@ -98,12 +98,10 @@ Item {
 
             IconButton {
                 anchors.top: parent.top
-                anchors.topMargin: Metrics.spacingS
+                anchors.topMargin: Metrics.spacingL
                 anchors.left: parent.left
-                anchors.leftMargin: Metrics.spacingS
+                anchors.leftMargin: Metrics.spacingL
                 iconPath: SVGLibrary.back
-                width: Metrics.iconSizeL
-                height: Metrics.iconSizeL
                 onPressed: {settingsPopup.close()}
             }
 
@@ -128,7 +126,7 @@ Item {
                 CustomComboBox {
                     id: themeComboBox
                     Layout.topMargin: Metrics.marginXS
-                    Layout.preferredHeight: 40
+                    Layout.preferredHeight: Metrics.controlHeight
                     model: ["Carbon Amber", "Catppuccin Mocha", "Dracula", "Everforest", "Monokai","Github Dark", "Gruvbox", "Vanilla Light"]
                     onCurrentTextChanged: {
                         if (initialized) {

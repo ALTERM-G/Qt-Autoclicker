@@ -1,5 +1,5 @@
-import QtQuick 6.5
-import Qt5Compat.GraphicalEffects 1.0
+import QtQuick
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: root

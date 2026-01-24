@@ -27,8 +27,8 @@ SpinBox {
             bottom: spinBox.from
             top: spinBox.to
         }
-        onEditingFinished: {
-            if (text !== "") {
+        onTextChanged: {
+            if (text !== "" && !isNaN(parseInt(text, 10))) {
                 spinBox.value = parseInt(text, 10)
             }
         }

@@ -3,11 +3,11 @@ import QtQuick
 Rectangle {
     id: root
     color: Theme.backgroundColor()
-    implicitHeight: 30
-    implicitWidth: 220
+    implicitHeight: Metrics.controlHeightCompact
+    implicitWidth: Metrics.comboBoxWidth
     border.color: Theme.borderColor()
     border.width: Metrics.borderNormal
-    radius: 5
+    radius: Metrics.radiusM
     property var tabData: []
     property alias currentIndex: listView.currentIndex
 
@@ -48,7 +48,7 @@ Rectangle {
                     text: tabData[index].name
                     color: listView.currentIndex === index ? Theme.borderColor() : Theme.textColor()
                     font.underline: false
-                    pointSize: 11
+                    pointSize: Typography.smallFontSize
                     font.bold: listView.currentIndex === index
 
                     Behavior on color {
@@ -77,7 +77,7 @@ Rectangle {
                 anchors.fill: parent
                 anchors.margins: 0
                 color: Theme.themeColor()
-                radius: 5
+                radius: Metrics.radiusM
             }
         }
     }

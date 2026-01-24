@@ -17,6 +17,7 @@ from backend.utils import KeyMapper, is_wayland
 class Controller(QObject):
     status_update = Signal(str)
     runningChanged = Signal()
+    cpsChanged = Signal()
 
     def __init__(self):
         super().__init__()
@@ -37,6 +38,16 @@ class Controller(QObject):
         self._theme_last_modified = 0
         self._shortcuts_enabled = True
         self._setup_shortcuts()
+
+    @Property(int, notify=cpsChanged)
+    def cps(self):
+        return self._cps
+
+    @Slot(int)
+    def set_cps(self, value):
+        if self._cps != value:
+            self._cps = value
+            self.cpsChanged.emit()
 
     def _load_settings(self):
         try:
@@ -177,10 +188,6 @@ class Controller(QObject):
     @Slot(str)
     def set_button(self, button):
         self._button = button
-
-    @Slot(int)
-    def set_cps(self, cps):
-        self._cps = cps
 
     @Slot(str)
     def set_keyboard_char(self, char):

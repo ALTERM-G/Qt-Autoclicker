@@ -6,13 +6,13 @@ import "components"
 ApplicationWindow {
     id: window
     visible: true
-    width: Metrics.windowWidth
-    height: Metrics.windowHeight
+    width: AppConfig.windowWidth
+    height: AppConfig.windowHeight
     minimumWidth: width
     maximumWidth: width
     minimumHeight: height
     maximumHeight: height
-    title: "Autoclick and shortcut_manager"
+    title: "Autoclicker"
 
     Component.onCompleted: {
         SettingsManager.loadSettings()
@@ -33,7 +33,7 @@ ApplicationWindow {
 
         Rectangle {
             id: topBar
-            height: Metrics.topBarHeight
+            height: AppConfig.topBarHeight
             color: Theme.topBarColor()
             anchors.top: parent.top
             anchors.left: parent.left
@@ -41,7 +41,7 @@ ApplicationWindow {
 
             Rectangle {
                 id: divider
-                height: Metrics.dividerThickness
+                height: AppConfig.dividerThickness
                 color: Theme.dividerColor()
                 width: parent.width
                 anchors.bottom: parent.bottom
@@ -80,9 +80,8 @@ ApplicationWindow {
         AppRect {
             id: appRect
             anchors.centerIn: parent
-            anchors.topMargin: Metrics.spacingXXL
-            width: Metrics.appRectWidth
-            height: Metrics.appRectHeight
+            width: AppConfig.appRectWidth
+            height: AppConfig.appRectHeight
 
             Column {
                 id: mouseView
@@ -282,6 +281,15 @@ ApplicationWindow {
             }
         }
 
+        CpsIndicator {
+            id: cpsWidget
+            cps: controller.cps
+            running: controller.is_running
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: appRect.bottom
+            anchors.bottomMargin: Metrics.marginM
+        }
+
         CustomButton {
             id: stop_button
             buttonText: "Stop"
@@ -289,7 +297,7 @@ ApplicationWindow {
             run: false
             iconPath: SVGLibrary.stop
             anchors.top: appRect.bottom
-            anchors.topMargin: 20
+            anchors.topMargin: Metrics.marginXL
             anchors.horizontalCenter: parent.horizontalCenter
             onPressed: {
                 controller.stop_clicking()

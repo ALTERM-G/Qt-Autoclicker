@@ -63,6 +63,7 @@ def main():
 
     # --- Load QML files ---
     qml_singletons = [
+        ("AppConfig", "ui/AppConfig.qml", None),
         ("Metrics", "ui/Metrics.qml", None),
         ("SVGLibrary", "ui/SVGLibrary.qml", None),
         ("Typography", "ui/Typography.qml", None),
