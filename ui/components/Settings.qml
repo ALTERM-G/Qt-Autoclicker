@@ -35,7 +35,7 @@ Item {
             path: SVGLibrary.settings
             width: Metrics.iconButtonSize
             height: Metrics.iconButtonSize
-            color: mouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
+            color: mouseArea.containsMouse ? Theme.themeColor : Theme.textColor
 
             Behavior on color {
                 ColorAnimation { duration: 150 }

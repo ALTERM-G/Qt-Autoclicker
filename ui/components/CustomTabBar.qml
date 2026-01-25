@@ -2,10 +2,10 @@ import QtQuick
 
 Rectangle {
     id: root
-    color: Theme.backgroundColor()
+    color: Theme.backgroundColor
     implicitHeight: Metrics.controlHeightCompact
     implicitWidth: Metrics.comboBoxWidth
-    border.color: Theme.borderColor()
+    border.color: Theme.borderColor
     border.width: Metrics.borderNormal
     radius: Metrics.radiusM
     property var tabData: []
@@ -34,7 +34,7 @@ Rectangle {
                 SVGObject {
                     id: tabIcon
                     path: tabData[index].icon
-                    color: listView.currentIndex === index ? Theme.borderColor() : Theme.textColor()
+                    color: listView.currentIndex === index ? Theme.borderColor : Theme.textColor
                     width: Metrics.iconSizeS
                     height: Metrics.iconSizeS
 
@@ -46,7 +46,7 @@ Rectangle {
                 CustomText {
                     id: tabText
                     text: tabData[index].name
-                    color: listView.currentIndex === index ? Theme.borderColor() : Theme.textColor()
+                    color: listView.currentIndex === index ? Theme.borderColor : Theme.textColor
                     font.underline: false
                     pointSize: Typography.smallFontSize
                     font.bold: listView.currentIndex === index
@@ -76,7 +76,7 @@ Rectangle {
             Rectangle {
                 anchors.fill: parent
                 anchors.margins: 0
-                color: Theme.themeColor()
+                color: Theme.themeColor
                 radius: Metrics.radiusM
             }
         }

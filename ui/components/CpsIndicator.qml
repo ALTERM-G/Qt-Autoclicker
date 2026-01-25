@@ -6,8 +6,8 @@ Rectangle {
     width: Metrics.comboBoxWidth
     height: Metrics.controlHeight
     radius: Metrics.radiusXL
-    color: Theme.backgroundColor()
-    border.color: Theme.borderColor()
+    color: Theme.backgroundColor
+    border.color: Theme.borderColor
     border.width: Metrics.borderNormal
     property int cps: 0
     visible: running

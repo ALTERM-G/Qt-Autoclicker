@@ -17,12 +17,12 @@ SpinBox {
         text: spinBox.value
         font.pixelSize: 18
         font.family: Typography.fontBold
-        color: Theme.textColor()
+        color: Theme.textColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        selectionColor: Theme.themeColor()
+        selectionColor: Theme.themeColor
         selectByMouse: true
-        selectedTextColor: Theme.hoverTextColor()
+        selectedTextColor: Theme.hoverTextColor
         validator: IntValidator {
             bottom: spinBox.from
             top: spinBox.to
@@ -45,8 +45,8 @@ SpinBox {
     background: Rectangle {
         anchors.fill: parent
         radius: Metrics.radiusM
-        color: Theme.backgroundColor()
-        border.color: Theme.borderColor()
+        color: Theme.backgroundColor
+        border.color: Theme.borderColor
         border.width: Metrics.borderThick
     }
 
@@ -54,7 +54,7 @@ SpinBox {
         x: spinBox.width - width
         height: spinBox.height / 2
         width: Metrics.iconSizeL
-        color: Theme.backgroundColor()
+        color: Theme.backgroundColor
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: Metrics.marginS
@@ -63,7 +63,7 @@ SpinBox {
         Text {
             text: "▴"
             anchors.centerIn: parent
-            color: upMouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
+            color: upMouseArea.containsMouse ? Theme.themeColor : Theme.textColor
             font.pixelSize: Typography.bigFontSize
         }
 
@@ -79,7 +79,7 @@ SpinBox {
     down.indicator: Rectangle {
         width: Metrics.iconSizeL
         height: spinBox.height / 2
-        color: Theme.backgroundColor()
+        color: Theme.backgroundColor
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: Metrics.marginS
@@ -88,7 +88,7 @@ SpinBox {
         Text {
             text: "▾"
             anchors.centerIn: parent
-            color: downMouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
+            color: downMouseArea.containsMouse ? Theme.themeColor : Theme.textColor
             font.pixelSize: Typography.bigFontSize
         }
 

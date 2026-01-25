@@ -17,8 +17,8 @@ ComboBox {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         color: mouseArea.containsMouse
-               ? Theme.hoverTextColor()
-               : Theme.textColor()
+               ? Theme.hoverTextColor
+               : Theme.textColor
 
         Behavior on color { ColorAnimation { duration: 150 } }
     }
@@ -35,11 +35,11 @@ ComboBox {
     background: Rectangle {
         anchors.fill: parent
         radius: Metrics.radiusM
-        border.color: Theme.borderColor()
+        border.color: Theme.borderColor
         border.width: Metrics.borderThick
         color: mouseArea.containsMouse
-               ? Theme.hoverBackgroundColor()
-               : Theme.backgroundColor()
+               ? Theme.hoverBackgroundColor
+               : Theme.backgroundColor
         Behavior on color { ColorAnimation { duration: 150 } }
 
         MouseArea {
@@ -63,8 +63,8 @@ ComboBox {
 
         background: Rectangle {
             radius: Metrics.radiusM
-            color: Theme.backgroundColor()
-            border.color: Theme.borderColor()
+            color: Theme.backgroundColor
+            border.color: Theme.borderColor
             border.width: Metrics.borderThick
         }
 
@@ -81,7 +81,7 @@ ComboBox {
                     height: control.optionHeight
                     radius: Metrics.radiusM
                     color: hovered
-                           ? Theme.hoverBackgroundColor()
+                           ? Theme.hoverBackgroundColor
                            : "transparent"
 
                     property bool hovered: false
@@ -103,7 +103,7 @@ ComboBox {
                         text: control.textRole ? model[control.textRole] : modelData
                         font.pixelSize: Typography.hugeFontSize
                         font.family: Typography.fontBold
-                        color: hovered ? Theme.hoverTextColor() : Theme.textColor()
+                        color: hovered ? Theme.hoverTextColor : Theme.textColor
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                     }

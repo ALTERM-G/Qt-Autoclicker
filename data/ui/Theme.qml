@@ -55,15 +55,15 @@ QtObject {
         }
     }
 
-    function themeColor() { return themes[currentTheme].themeColor }
-    function appBackgroundColor() { return themes[currentTheme].appBackgroundColor }
-    function topBarColor() { return themes[currentTheme].topBarColor }
-    function backgroundColor() { return themes[currentTheme].backgroundColor }
-    function hoverBackgroundColor() { return themes[currentTheme].hoverBackgroundColor }
-    function borderColor() { return themes[currentTheme].borderColor }
-    function textColor() { return themes[currentTheme].textColor }
-    function hoverTextColor() { return themes[currentTheme].hoverTextColor }
-    function dividerColor() { return themes[currentTheme].dividerColor }
+    readonly property color themeColor: themes[currentTheme].themeColor
+    readonly property color appBackgroundColor: themes[currentTheme].appBackgroundColor
+    readonly property color topBarColor: themes[currentTheme].topBarColor
+    readonly property color backgroundColor: themes[currentTheme].backgroundColor
+    readonly property color hoverBackgroundColor: themes[currentTheme].hoverBackgroundColor
+    readonly property color borderColor: themes[currentTheme].borderColor
+    readonly property color textColor: themes[currentTheme].textColor
+    readonly property color hoverTextColor: themes[currentTheme].hoverTextColor
+    readonly property color dividerColor: themes[currentTheme].dividerColor
 
     function setTheme(name) {
         if (themes[name]) {

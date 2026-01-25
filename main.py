@@ -37,7 +37,17 @@ def main():
                 engine.rootContext().setContextProperty(context_name, obj)
                 if callback:
                     callback(obj)
-            return obj
+                return obj
+            else:
+                print(
+                    f"Error: Failed to create QML object from {filename}",
+                    file=sys.stderr,
+                )
+                for error in component.errors():
+                    print(f"  - {error.toString()}", file=sys.stderr)
+                return None
+        else:
+            print(f"Error: QML file not found at {path}", file=sys.stderr)
         return None
 
     # --- Load fonts ---

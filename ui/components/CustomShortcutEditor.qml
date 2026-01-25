@@ -8,8 +8,8 @@ Rectangle {
     radius: 8
     focus: true
     border.width: Metrics.borderThick
-    color: recording ? Theme.themeColor() : Theme.backgroundColor()
-    border.color: Theme.borderColor()
+    color: recording ? Theme.themeColor : Theme.backgroundColor
+    border.color: Theme.borderColor
 
     // == Public API ==
     property bool allowLonelyLetters: true
@@ -63,7 +63,7 @@ Rectangle {
     CustomText {
         anchors.centerIn: parent
         text: recording ? "Press keys..." : root.shortcutText
-        color: Theme.textColor()
+        color: Theme.textColor
         font.underline: false
     }
 
@@ -73,7 +73,7 @@ Rectangle {
         cursorShape: Qt.PointingHandCursor
         onClicked: {
             root.recording = true
-            root.forceActiveFocus()
+            root.forceActiveFocus
         }
     }
 

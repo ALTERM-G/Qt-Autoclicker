@@ -5,9 +5,9 @@ Rectangle {
     width: Metrics.buttonWidth
     height: Metrics.controlHeight
     radius: Metrics.radiusM
-    border.color: Theme.borderColor()
+    border.color: Theme.borderColor
     border.width: Metrics.borderThick
-    color: mouseArea.containsMouse ? Theme.hoverBackgroundColor() : Theme.backgroundColor()
+    color: mouseArea.containsMouse ? Theme.hoverBackgroundColor : Theme.backgroundColor
     signal pressed
     property string buttonText
     property bool run: false
@@ -29,14 +29,14 @@ Rectangle {
             visible: convertButton.iconPath !== ""
             width: Metrics.iconSizeS
             height: Metrics.iconSizeS
-            color: mouseArea.containsMouse ? Theme.hoverTextColor() : Theme.textColor()
+            color: mouseArea.containsMouse ? Theme.hoverTextColor : Theme.textColor
         }
 
         Text {
             text: convertButton.buttonText
             font.pixelSize: 18
             font.family: Typography.fontBold
-            color: mouseArea.containsMouse ? Theme.hoverTextColor() : Theme.textColor()
+            color: mouseArea.containsMouse ? Theme.hoverTextColor : Theme.textColor
             anchors.verticalCenter: parent.verticalCenter
 
             Behavior on color {

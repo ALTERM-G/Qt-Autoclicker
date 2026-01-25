@@ -26,7 +26,7 @@ Rectangle {
         path: iconPath
         width: Metrics.iconSizeM
         height: Metrics.iconSizeM
-        color: mouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
+        color: mouseArea.containsMouse ? Theme.themeColor : Theme.textColor
 
         Behavior on color {
             ColorAnimation { duration: 150 }
