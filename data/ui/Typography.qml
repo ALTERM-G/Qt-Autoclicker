@@ -7,7 +7,9 @@ QtObject {
     readonly property string fontBold: "JetBrainsMono"
 
     // --- Typography ---
-    readonly property int bigFontSize: 18
+    readonly property int iconFontSize: 24
+    readonly property int hugeFontSize: 18
+    readonly property int bigFontSize: 16
     readonly property int normalFontSize: 14
     readonly property int smallFontSize: 11
 }

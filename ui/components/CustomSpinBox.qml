@@ -22,7 +22,7 @@ SpinBox {
         verticalAlignment: Text.AlignVCenter
         selectionColor: Theme.themeColor()
         selectByMouse: true
-        selectedTextColor: "#000000"
+        selectedTextColor: Theme.hoverTextColor()
         validator: IntValidator {
             bottom: spinBox.from
             top: spinBox.to
@@ -44,7 +44,7 @@ SpinBox {
 
     background: Rectangle {
         anchors.fill: parent
-        radius: 6
+        radius: Metrics.radiusM
         color: Theme.backgroundColor()
         border.color: Theme.borderColor()
         border.width: Metrics.borderThick
@@ -64,7 +64,7 @@ SpinBox {
             text: "▴"
             anchors.centerIn: parent
             color: upMouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
-            font.pixelSize: 16
+            font.pixelSize: Typography.bigFontSize
         }
 
         MouseArea {
@@ -89,7 +89,7 @@ SpinBox {
             text: "▾"
             anchors.centerIn: parent
             color: downMouseArea.containsMouse ? Theme.themeColor() : Theme.textColor()
-            font.pixelSize: 14
+            font.pixelSize: Typography.bigFontSize
         }
 
         MouseArea {

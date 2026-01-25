@@ -5,7 +5,7 @@ QtObject {
 
     // --- Control sizing ---
     readonly property int controlHeight: 40
-    readonly property int controlHeightCompact: 30
+    readonly property int controlHeightCompact: 35
     readonly property int buttonWidth: 150
     readonly property int comboBoxWidth: 240
     readonly property int spinBoxWidth: 120
@@ -39,4 +39,5 @@ QtObject {
     readonly property int radiusS: 3
     readonly property int radiusM: 6
     readonly property int radiusL: 8
+    readonly property int radiusXL: 12
 }

@@ -1,4 +1,5 @@
 singleton AppConfig 1.0 ui/AppConfig.qml
+singleton ASCIIart 1.0 ui/ASCIIart.qml
 singleton Metrics 1.0 ui/Metrics.qml
 singleton Typography 1.0 ui/Typography.qml
 singleton Theme 1.0 ui/Theme.qml

@@ -4,11 +4,11 @@ import QtQuick.Controls
 Rectangle {
     id: root
     width: Metrics.comboBoxWidth
-    height: 30
-    radius: 14
+    height: Metrics.controlHeight
+    radius: Metrics.radiusXL
     color: Theme.backgroundColor()
     border.color: Theme.borderColor()
-    border.width: 2
+    border.width: Metrics.borderNormal
     property int cps: 0
     visible: running
     property bool running: false

@@ -14,7 +14,7 @@ Item {
         width: Metrics.iconButtonSize
         height: Metrics.iconButtonSize
         color: "transparent"
-        scale: mouseArea.containsMouse ? 1.1 : 1.0
+        scale: mouseArea.containsMouse ? 1.05 : 1.0
 
         Behavior on scale {
             NumberAnimation { duration: 150; easing.type: Easing.OutCubic }

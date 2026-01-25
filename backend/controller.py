@@ -32,7 +32,7 @@ class Controller(QObject):
         self._keyboard_char = "A"
         self._current_view = "mouse"
         self._cps = 50
-        self._settings_path = Path(__file__).parent.parent / "data" / "Settings.json"
+        self._settings_path = Path(__file__).parent.parent / "data" / "config" / "Settings.json"
         self._settings_last_modified = 0
         self._theme_path = Path(__file__).parent.parent / "data" / "CurrentTheme.json"
         self._theme_last_modified = 0

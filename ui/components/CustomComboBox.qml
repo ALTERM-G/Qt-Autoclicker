@@ -6,13 +6,13 @@ ComboBox {
     width: Metrics.comboBoxWidth
     height: Metrics.controlHeight
     hoverEnabled: true
-    property int optionHeight: 35
+    property int optionHeight: Metrics.controlHeightCompact
     property int popupPadding: 6
 
     contentItem: Text {
         text: control.displayText !== "" ? control.displayText : "Select"
         anchors.fill: parent
-        font.pixelSize: 18
+        font.pixelSize: Typography.hugeFontSize
         font.family: Typography.fontBold
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
@@ -26,7 +26,7 @@ ComboBox {
     indicator: Text {
         text: "▾"
         color: contentItem.color
-        font.pixelSize: 24
+        font.pixelSize: Typography.iconFontSize
         anchors.right: parent.right
         anchors.rightMargin: Metrics.marginM
         anchors.verticalCenter: parent.verticalCenter
@@ -34,7 +34,7 @@ ComboBox {
 
     background: Rectangle {
         anchors.fill: parent
-        radius: 6
+        radius: Metrics.radiusM
         border.color: Theme.borderColor()
         border.width: Metrics.borderThick
         color: mouseArea.containsMouse
@@ -62,7 +62,7 @@ ComboBox {
         rightPadding: 0
 
         background: Rectangle {
-            radius: 6
+            radius: Metrics.radiusM
             color: Theme.backgroundColor()
             border.color: Theme.borderColor()
             border.width: Metrics.borderThick
@@ -79,7 +79,7 @@ ComboBox {
                 delegate: Rectangle {
                     width: parent.width
                     height: control.optionHeight
-                    radius: 6
+                    radius: Metrics.radiusM
                     color: hovered
                            ? Theme.hoverBackgroundColor()
                            : "transparent"
@@ -101,8 +101,8 @@ ComboBox {
                     Text {
                         anchors.fill: parent
                         text: control.textRole ? model[control.textRole] : modelData
-                        font.pixelSize: 18
-        font.family: Typography.fontBold
+                        font.pixelSize: Typography.hugeFontSize
+                        font.family: Typography.fontBold
                         color: hovered ? Theme.hoverTextColor() : Theme.textColor()
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
