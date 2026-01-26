@@ -5,7 +5,7 @@ Rectangle {
     id: root
     width: Metrics.comboBoxWidth
     height: Metrics.controlHeight
-    radius: 8
+    radius: Metrics.radiusM
     focus: true
     border.width: Metrics.borderThick
     color: recording ? Theme.themeColor : Theme.backgroundColor

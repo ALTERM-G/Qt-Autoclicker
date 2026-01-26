@@ -13,7 +13,6 @@ QtObject {
     readonly property int iconSizeS: 17
     readonly property int iconSizeM: 24
     readonly property int iconSizeL: 30
-    readonly property int iconSizeXL: 40
 
     // --- Spacing ---
     readonly property int spacingXS: 4
@@ -21,23 +20,18 @@ QtObject {
     readonly property int spacingM: 12
     readonly property int spacingL: 20
     readonly property int spacingXL: 60
-    readonly property int spacingXXL: 100
 
     // --- Margins ---
-    readonly property int marginXS: 2
     readonly property int marginS: 3
     readonly property int marginM: 10
-    readonly property int marginL: 15
     readonly property int marginXL: 20
 
     // --- Borders ---
-    readonly property int borderThin: 1
     readonly property int borderNormal: 2
     readonly property int borderThick: 3
 
     // --- Radius ---
     readonly property int radiusS: 3
     readonly property int radiusM: 6
-    readonly property int radiusL: 8
     readonly property int radiusXL: 12
 }
