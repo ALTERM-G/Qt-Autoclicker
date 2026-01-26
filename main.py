@@ -19,8 +19,6 @@ def cleanup():
 
 def main():
     global _controller
-    import os
-
     os.environ["QML_XHR_ALLOW_FILE_WRITE"] = "1"
     os.environ["QML_XHR_ALLOW_FILE_READ"] = "1"
     app = QGuiApplication(sys.argv)
@@ -50,7 +48,7 @@ def main():
             print(f"Error: QML file not found at {path}", file=sys.stderr)
         return None
 
-    # --- Load fonts ---
+    # ---------------- Fonts ----------------
     assets_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
     font_dir = os.path.join(assets_path, "fonts")
     if os.path.exists(font_dir):
@@ -60,18 +58,19 @@ def main():
                 font_id = QFontDatabase.addApplicationFont(font_path)
                 family = QFontDatabase.applicationFontFamilies(font_id)[0]
 
-    # --- Icons ---
+    # ---------------- Icons ----------------
     base_path = os.path.dirname(os.path.abspath(__file__))
     icon_path = os.path.join(base_path, "assets", "icons")
     QIcon.setThemeSearchPaths([icon_path])
+    app.setWindowIcon(QIcon(os.path.join(base_path, "assets/icons/icon.svg")))
 
-    # --- Controller ---
+    # ---------------- Controller ----------------
     controller = Controller()
     _controller = controller
     _qml_objects.append(controller)
     engine.rootContext().setContextProperty("controller", controller)
 
-    # --- Load QML files ---
+    # ---------------- Load QML files ----------------
     qml_singletons = [
         ("AppConfig", "ui/AppConfig.qml", None),
         ("ASCIIart", "ui/ASCIIart.qml", None),
@@ -81,14 +80,12 @@ def main():
         ("Theme", "ui/Theme.qml", lambda obj: obj.initializeTheme()),
         ("SettingsManager", "config/SettingsManager.qml", lambda obj: obj.loadSettings())
     ]
-
     qml_objects = {}
 
     for name, path, callback in qml_singletons:
         qml_objects[name] = load_qml(engine, path, name, callback)
 
-
-    # --- Load main.qml ---
+    # ---------------- Load main.qml -----------------
     main_qml = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "ui", "main.qml"
     )
@@ -96,7 +93,6 @@ def main():
 
     if not engine.rootObjects():
         sys.exit(-1)
-
     app.aboutToQuit.connect(cleanup)
     exit_code = app.exec()
     sys.exit(exit_code)

@@ -27,6 +27,7 @@ QtObject {
     readonly property int marginXL: 20
 
     // --- Borders ---
+    readonly property int borderSmall: 1
     readonly property int borderNormal: 2
     readonly property int borderThick: 3
 

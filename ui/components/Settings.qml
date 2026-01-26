@@ -9,89 +9,30 @@ Item {
     property bool isPopupOpen: settingsPopup.opened
     onIsPopupOpenChanged: controller.set_shortcuts_enabled(!isPopupOpen)
 
-    Rectangle {
-        id: buttonRect
-        width: Metrics.iconButtonSize
-        height: Metrics.iconButtonSize
-        color: "transparent"
-        scale: mouseArea.containsMouse ? 1.05 : 1.0
+    IconButton {
+        id: settingsButton
+        anchors.centerIn: parent
+        iconPath: SVGLibrary.settings
+        buttonWidth: Metrics.iconButtonSize
+        buttonHeight: Metrics.iconButtonSize
 
-        Behavior on scale {
-            NumberAnimation { duration: 150; easing.type: Easing.OutCubic }
+        CustomToolTip {
+            text: "Settings"
+            visible: settingsButton.hovered
+            delay: 600
         }
 
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-            cursorShape: Qt.PointingHandCursor
-            onClicked: {
-                settingsPopup.opened ? settingsPopup.close() : settingsPopup.open()
-            }
-        }
-
-        SVGObject {
-            anchors.centerIn: parent
-            path: SVGLibrary.settings
-            width: Metrics.iconButtonSize
-            height: Metrics.iconButtonSize
-            color: mouseArea.containsMouse ? Theme.themeColor : Theme.textColor
-
-            Behavior on color {
-                ColorAnimation { duration: 150 }
-            }
+        onPressed: {
+            settingsPopup.opened ? settingsPopup.close() : settingsPopup.open()
         }
     }
 
-    Popup {
+    CustomPopup {
         id: settingsPopup
         width: AppConfig.appRectWidth
         height: AppConfig.appRectHeight
-        parent: Overlay.overlay
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
-        modal: true
-        focus: true
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        transformOrigin: Item.Center
-
-        enter: Transition {
-            ParallelAnimation {
-                NumberAnimation {
-                    property: "opacity"
-                    from: 0
-                    to: 1
-                    duration: 200
-                    easing.type: Easing.InOutQuad
-                }
-                NumberAnimation {
-                    property: "scale"
-                    from: 0.8
-                    to: 1
-                    duration: 200
-                    easing.type: Easing.OutBack
-                }
-            }
-        }
-
-        exit: Transition {
-            ParallelAnimation {
-                NumberAnimation {
-                    property: "opacity"
-                    from: 1
-                    to: 0
-                    duration: 200
-                    easing.type: Easing.InOutQuad
-                }
-                NumberAnimation {
-                    property: "scale"
-                    from: 1
-                    to: 0.85
-                    duration: 200
-                    easing.type: Easing.InQuad
-                }
-            }
-        }
 
         background: AppRect {
             anchors.fill: parent
