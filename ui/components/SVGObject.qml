@@ -16,7 +16,7 @@ Item {
         source: root.path
         fillMode: Image.PreserveAspectFit
         smooth: true
-        sourceSize: Qt.size(root.width * 2, root.height * 2)
+        sourceSize: Qt.size(root.width, root.height)
     }
 
     ColorOverlay {
