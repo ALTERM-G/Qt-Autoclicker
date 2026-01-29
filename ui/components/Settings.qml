@@ -68,7 +68,7 @@ Item {
                     id: themeComboBox
                     Layout.topMargin: Metrics.marginXS
                     Layout.preferredHeight: Metrics.controlHeight
-                    model: ["Carbon Amber", "Catppuccin Mocha", "Dracula", "Everforest", "Monokai","Github Dark", "Gruvbox", "Vanilla Light"]
+                    model: Theme.themeNames
                     onCurrentTextChanged: {
                         if (initialized) {
                             Theme.setTheme(currentText)

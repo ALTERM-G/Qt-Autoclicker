@@ -43,17 +43,12 @@ QtObject {
             textColor: "#B4B4B4", hoverTextColor: "#2A2A2A", dividerColor: "#333333"
         },
         "Github Dark": {
-            themeColor: "#2F81F7",
-            appBackgroundColor: "#0D1117",
-            topBarColor: "#161B22",
-            backgroundColor: "#0D1117",
-            hoverBackgroundColor: "#3FB950",
-            borderColor: "#30363D",
-            textColor: "#C9D1D9",
-            hoverTextColor: "#0D1117",
-            dividerColor: "#30363D"
+            themeColor: "#2F81F7", appBackgroundColor: "#0D1117", topBarColor: "#161B22",
+            backgroundColor: "#0D1117", hoverBackgroundColor: "#3FB950", borderColor: "#30363D",
+            textColor: "#C9D1D9", hoverTextColor: "#0D1117", dividerColor: "#30363D"
         }
     }
+    property var themeNames: Object.keys(themes)
 
     readonly property color themeColor: themes[currentTheme].themeColor
     readonly property color appBackgroundColor: themes[currentTheme].appBackgroundColor

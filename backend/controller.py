@@ -76,11 +76,11 @@ class Controller(QObject):
                     with open(self._theme_path) as f:
                         theme_data = json.load(f)
                         self._theme_last_modified = current_mtime
-                        return theme_data.get("currentTheme", "Dracula")
+                        return theme_data.get("currentTheme", "Carbon Amber")
         except Exception as e:
             print(f"Error loading theme: {e}")
 
-        return "Dracula"
+        return "Carbon Amber"
 
     def _setup_shortcuts(self):
         settings = self._load_settings()
