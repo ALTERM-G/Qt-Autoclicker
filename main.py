@@ -49,14 +49,33 @@ def main():
         return None
 
     # ---------------- Fonts ----------------
-    assets_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+    assets_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "assets"
+    )
     font_dir = os.path.join(assets_path, "fonts")
+    loaded_fonts = {}
+
     if os.path.exists(font_dir):
         for font_filename in os.listdir(font_dir):
             if font_filename.endswith(".ttf"):
                 font_path = os.path.join(font_dir, font_filename)
                 font_id = QFontDatabase.addApplicationFont(font_path)
-                family = QFontDatabase.applicationFontFamilies(font_id)[0]
+                if font_id == -1:
+                    print(f"Failed to load font '{font_filename}'", file=sys.stderr)
+                    continue
+                families = QFontDatabase.applicationFontFamilies(font_id)
+                if not families:
+                    print(f"No families found for font '{font_filename}'", file=sys.stderr)
+                    continue
+                family_name = families[0]
+                loaded_fonts[font_filename] = family_name
+                print(f"Loaded font '{font_filename}' with family '{family_name}'")
+
+    engine.rootContext().setContextProperty("LoadedFonts", loaded_fonts)
+    main_regular_font_file = "JetBrainsMonoNL-Regular-App.ttf"
+    if main_regular_font_file in loaded_fonts:
+        from PySide6.QtGui import QFont
+        app.setFont(QFont(loaded_fonts[main_regular_font_file]))
 
     # ---------------- Icons ----------------
     base_path = os.path.dirname(os.path.abspath(__file__))

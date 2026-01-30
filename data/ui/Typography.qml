@@ -2,8 +2,8 @@ pragma Singleton
 import QtQuick
 
 QtObject {
-    readonly property string fontRegular: "JetBrainsMono NL"
-    readonly property string fontBold: "JetBrainsMono"
+    readonly property string fontRegular: "JetBrainsMonoNLApp"
+    readonly property string fontBold: "JetBrainsMonoApp"
 
     readonly property int iconFontSize: 24
     readonly property int hugeFontSize: 18
