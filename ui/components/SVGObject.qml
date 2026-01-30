@@ -1,27 +1,27 @@
 import QtQuick
-import Qt5Compat.GraphicalEffects
+import QtQuick.VectorImage
+import QtQuick.Effects
 
 Item {
     id: root
     property string path: ""
     property color color: "black"
 
-    width: Metrics.iconSizeM
-    height: Metrics.iconSizeM
+    width: Metrics.iconButton
+    height: Metrics.iconButton
 
-    Image {
-        id: sourceImage
+    VectorImage {
+        id: svg
         anchors.fill: parent
-        visible: false
         source: root.path
-        fillMode: Image.PreserveAspectFit
-        smooth: true
-        sourceSize: Qt.size(root.width, root.height)
-    }
-
-    ColorOverlay {
-        anchors.fill: parent
-        source: sourceImage
-        color: root.color
+        fillMode: VectorImage.PreserveAspectFit
+        preferredRendererType: VectorImage.CurveRenderer
+        layer.enabled: true
+        layer.smooth: true
+        layer.effect: MultiEffect {
+            brightness: 1.0
+            colorization: 1.0
+            colorizationColor: root.color
+        }
     }
 }
