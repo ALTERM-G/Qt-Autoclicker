@@ -7,8 +7,8 @@ Item {
     property string path: ""
     property color color: "black"
 
-    width: Metrics.iconButton
-    height: Metrics.iconButton
+    width: Metrics.iconSizeM
+    height: Metrics.iconSizeM
 
     VectorImage {
         id: svg
