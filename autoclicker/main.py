@@ -5,17 +5,19 @@ from PySide6.QtCore import QUrl
 from PySide6.QtGui import QFontDatabase, QGuiApplication, QIcon
 from PySide6.QtQml import QQmlApplicationEngine, QQmlComponent
 
-from backend.controller import Controller
+from .backend.controller import Controller
 
 _qml_objects = []
 _data_object = None
 _controller = None
+
 
 def cleanup():
     global _controller
     if _controller:
         _controller.stop_clicking()
         _controller.cleanup_shortcuts()
+
 
 def main():
     global _controller
@@ -49,9 +51,7 @@ def main():
         return None
 
     # ---------------- Fonts ----------------
-    assets_path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "assets"
-    )
+    assets_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
     font_dir = os.path.join(assets_path, "fonts")
     loaded_fonts = {}
 
@@ -65,7 +65,9 @@ def main():
                     continue
                 families = QFontDatabase.applicationFontFamilies(font_id)
                 if not families:
-                    print(f"No families found for font '{font_filename}'", file=sys.stderr)
+                    print(
+                        f"No families found for font '{font_filename}'", file=sys.stderr
+                    )
                     continue
                 family_name = families[0]
                 loaded_fonts[font_filename] = family_name
@@ -75,6 +77,7 @@ def main():
     main_regular_font_file = "JetBrainsMonoNL-Regular-App.ttf"
     if main_regular_font_file in loaded_fonts:
         from PySide6.QtGui import QFont
+
         app.setFont(QFont(loaded_fonts[main_regular_font_file]))
 
     # ---------------- Icons ----------------
@@ -97,7 +100,11 @@ def main():
         ("SVGLibrary", "ui/SVGLibrary.qml", None),
         ("Typography", "ui/Typography.qml", None),
         ("Theme", "ui/Theme.qml", lambda obj: obj.initializeTheme()),
-        ("SettingsManager", "config/SettingsManager.qml", lambda obj: obj.loadSettings())
+        (
+            "SettingsManager",
+            "config/SettingsManager.qml",
+            lambda obj: obj.loadSettings(),
+        ),
     ]
     qml_objects = {}
 

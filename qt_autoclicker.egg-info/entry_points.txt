@@ -1,0 +1,2 @@
+[console_scripts]
+qt-autoclicker = autoclicker.main:main

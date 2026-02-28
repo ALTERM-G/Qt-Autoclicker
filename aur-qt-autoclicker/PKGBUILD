@@ -1,0 +1,45 @@
+pkgname=qt-autoclicker
+_pkgname=Qt-Autoclicker
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="A Qt-based autoclicker with keyboard and mouse automation"
+arch=('any')
+url="https://github.com/your-username/Qt-Autoclicker"
+license=('MIT')
+depends=(
+    'python'
+    'python-pydbus'
+    'python-gobject'
+    'pyside6'
+    'python-evdev'
+)
+makedepends=(
+    'python-build'
+    'python-installer'
+    'python-wheel'
+    'python-setuptools'
+)
+source=()
+sha256sums=()
+
+prepare() {
+    mkdir -p "$srcdir/$_pkgname"
+    cd "$srcdir/$_pkgname"
+
+    msg2 "Copying local sources..."
+    cp -r "$startdir/../autoclicker" .
+    cp "$startdir/../pyproject.toml" .
+    cp "$startdir/../README.md" .
+    cp "$startdir/../LICENSE" .
+}
+
+build() {
+    cd "$srcdir/$_pkgname"
+    /usr/bin/python -m build --wheel --no-isolation
+}
+
+package() {
+    cd "$srcdir/$_pkgname"
+    /usr/bin/python -m installer --destdir="$pkgdir" dist/*.whl
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

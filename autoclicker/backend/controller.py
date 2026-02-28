@@ -5,13 +5,13 @@ from evdev import ecodes
 from pathlib import Path
 import json
 
-from backend.workers.mouse_clicking import PynputClickWorker, WaylandClickWorker
-from backend.workers.keyboard_clicking import (
+from .workers.mouse_clicking import PynputClickWorker, WaylandClickWorker
+from .workers.keyboard_clicking import (
     PynputKeyboardWorker,
     WaylandKeyboardWorker,
 )
-from backend.workers.shortcut_handling import ShortcutWorker, WaylandShortcutWorker
-from backend.utils import KeyMapper, is_wayland
+from .workers.shortcut_handling import ShortcutWorker, WaylandShortcutWorker
+from .utils import KeyMapper, is_wayland
 
 
 class Controller(QObject):
@@ -32,7 +32,9 @@ class Controller(QObject):
         self._keyboard_char = "A"
         self._current_view = "mouse"
         self._cps = 50
-        self._settings_path = Path(__file__).parent.parent / "data" / "config" / "Settings.json"
+        self._settings_path = (
+            Path(__file__).parent.parent / "data" / "config" / "Settings.json"
+        )
         self._settings_last_modified = 0
         self._theme_path = Path(__file__).parent.parent / "data" / "CurrentTheme.json"
         self._theme_last_modified = 0

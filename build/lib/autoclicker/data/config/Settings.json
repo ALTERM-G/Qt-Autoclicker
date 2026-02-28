@@ -1,0 +1,16 @@
+{
+  "shortcuts": {
+    "run": {
+      "key": 16777269,
+      "modifiers": 0
+    },
+    "stop": {
+      "key": 83,
+      "modifiers": 33554432
+    },
+    "keyboard": {
+      "key": 83,
+      "modifiers": 0
+    }
+  }
+}

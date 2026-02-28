@@ -1,7 +1,11 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "qt-autoclicker"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Qt-based autoclicker with keyboard and mouse automation"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
@@ -13,3 +17,13 @@ dependencies = [
     "pytest-qt>=4.5.0",
     "wayland-automation>=0.2.6",
 ]
+
+[project.scripts]
+qt-autoclicker = "autoclicker.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["autoclicker*"]
+
+[tool.setuptools.package-data]
+autoclicker = ["assets/**/*", "data/**/*", "ui/**/*"]
